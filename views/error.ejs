@@ -6,8 +6,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/tailwind.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
     <title>Error!</title>
-    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link rel="icon" href="/images/CALIRP_support.png" type="image/x-icon" />
     <link href="/css/navmenu.css" rel="stylesheet" />
     <script
       src="https://kit.fontawesome.com/e96370e984.js"
@@ -41,31 +42,13 @@
                   class="block text-sm font-medium text-gray-700"
                   >Reason for Error</label
                 >
-                <textarea
-                  id="reason"
-                  name="reason"
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  rows="4"
-                  cols="50"
-                  disabled
-                >
-<%= message %></textarea
-                >
-              </div>
-
-              <div class="mb-4">
-                <label
-                  for="discordID"
-                  class="block text-sm font-medium text-gray-700"
-                  >Discord ID</label
-                >
                 <input
                   type="text"
                   required
-                  id="discordID"
-                  name="discordID"
+                  id="reason"
+                  name="reason"
                   class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value="<%= user %>"
+                  value="<%= message %>"
                   disabled
                 />
               </div>

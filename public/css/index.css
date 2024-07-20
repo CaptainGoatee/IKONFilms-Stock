@@ -1,0 +1,147 @@
+/** @format */
+
+* {
+  height: auto;
+}
+body, .main {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ff9919;
+  background-color: #464646;
+}
+.text-red {
+  color: #ff0000;
+}
+.underline {
+  text-decoration: underline;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f6f6f6;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #9d9d9d;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #ff9919;
+  color: #f6f6f6;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {
+    display: none;
+  }
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+
+  .loginButtons {
+    /* stack ontop*/
+    display: none;
+  }
+}
+#searchBar {
+  font-family: Arial, Helvetica, sans-serif, 'FontAwesome';
+}
+#searchBar input {
+  padding: 3px;
+  padding-left: 5px;
+}
+form input {
+  padding: 3px;
+  padding-left: 5px;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {
+    position: relative;
+  }
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  #loginButtons {
+    /* stack ontop*/
+    display: none;
+  }
+}
+input {
+  background-color: inherit;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 5px;
+}
+.orangeButton {
+  background-color: #ff9919;
+  color: black;
+  border-radius: 5px;
+  padding: 12px 16px 12px 16px;
+}
+
+.loginContainer {
+  /**Centre the box in middle of screen**/
+  position: absolute;
+  /** centre vertically*/
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /**make it responsive*/
+  width: 80%;
+  padding: 10px;
+}
+#container {
+  background-color: #333333;
+  -webkit-box-shadow: 0px 0px 50px 25px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 50px 25px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 50px 25px rgba(0, 0, 0, 0.75);
+}
+.loginErrorMessage {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.signupContainer {
+ /** center horizontally **/
+ position: absolute;
+ left: 50%;
+ top: 1rem;
+ transform: translateX(-50%);
+ /** centre vertically*/
+
+ justify-content: center;
+ display: flex;
+ /**make it responsive*/
+ width: 80%;
+ padding: 10px;
+
+}
+#userManageTable select{
+  width: 100%;
+  background-color: inherit;
+  border: white 1px solid;
+}

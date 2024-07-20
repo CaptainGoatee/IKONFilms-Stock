@@ -1,251 +1,1494 @@
 <!-- @format -->
 
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/css/tailwind.css" rel="stylesheet" />
-    <link href="/css/styles.css" rel="stylesheet" />
-    <link href="/css/navmenu.css" rel="stylesheet" />
-    <link href="/css/settings.css" rel="stylesheet" />
     <title>Settings</title>
-    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.webp" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
     <script
-      src="https://kit.fontawesome.com/e96370e984.js"
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&amp;display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="page">
-    <div class="flex">
-      <!-- NAV BAR START-->
-      <div id="nav-bar">
-        <div id="nav-header">
-          <a id="nav-title" href="/"
-            ><img
-              class="supportIcon"
-              src="./images/CALIRP_support.png"
-              alt="SupportLogo"
-            /><i class="title"> Support Team</i></a
-          >
-          <hr />
-        </div>
-        <div id="nav-content">
-          <a class="nav-button" href="/">
-            <i class="fas fa-desktop"></i><span>My Dashboard</span>
-          </a>
-          <a class="nav-button" href="/my-tickets">
-            <i class="fas fa-ticket"></i><span>My Tickets</span>
-          </a>
-          <a class="nav-button" href="/new-ticket">
-            <i class="fas fa-receipt"></i><span>Log a Ticket</span>
-          </a>
-          <a class="nav-button" href="/roster">
-            <i class="fas fa-address-book"></i><span>Roster</span>
-          </a>
-          <a
-            class="nav-button"
-            href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
-          >
-            <i class="fas fa-book"></i><span>Knowledgebase</span>
-          </a>
-          <% if (user.isStaff) { %>
-          <hr />
-          <a class="nav-button" href="/lsa-dashboard">
-            <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
-          </a>
-          <a class="nav-button" href="/punishments">
-            <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
-          </a>
-          <a class="nav-button" href="/ticket-manager">
-            <i class="fas fa-clipboard-list"></i><span>Ticket Management</span>
-          </a>
-          <% } %> <% if (user.superAdmin) { %>
-          <hr />
-          <a class="nav-button" href="/user-management">
-            <i class="fas fa-users"></i><span>User Management</span>
-          </a>
-          <a class="nav-button" href="/admin">
-            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
-          </a>
-          <% } %>
-          <hr />
-          <a class="nav-button" href="/settings">
-            <i class="fas fa-gear"></i><span>Settings</span>
-          </a>
-          <a class="nav-button" href="/logout">
-            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
-          </a>
-          <div id="nav-content-highlight"></div>
-        </div>
-        <div id="nav-footer">
-          <div id="nav-footer-heading">
-            <div id="nav-footer-avatar">
-              <img
-                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
-              />
+
+  <body>
+    <div class="page"></div>
+    <div class="topnav" id="myTopnav">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/manage-jobs">Manage Jobs</a>
+      <a href="/users">Manage Users</a>
+      <a href="/tyres">Tyres</a>
+      <a href="/settings" class="active">Settings</a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    <div class="app-container d-flex flex-row w-100 mw-100 h-100 mh-100">
+      <div class="main d-flex flex-grow-1 flex-column overflow-hidden">
+        <div class="top-nav flex-grow-1">
+          <div class="flex-grow-1">
+            <div id="navbar">
+              <nav class="navbar p-0 navbar-expand-lg" id="navbar2">
+                <div
+                  id="breadcrumbs-collapse"
+                  class="border-top border-bottom navbar-collapse collapse"
+                  style="display: none"
+                ></div>
+              </nav>
             </div>
-            <div id="nav-footer-titlebox">
-              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
-              <p id="nav-footer-subtitle"><%= rank %></p>
-            </div>
+            <style lang="scss" scoped="">
+              .separator {
+                border-right: 1px solid rgb(227, 231, 236);
+                height: 30px;
+                margin-left: 0.5rem;
+                margin-right: 1rem;
+              }
+            </style>
           </div>
-          <div id="nav-footer-content">
-            <ul class="dropdown" aria-label="submenu">
-              <li><a href="/settings">Settings</a></li>
-              <li><a href="/logout">Logout</a></li>
-            </ul>
+        </div>
+
+        <div
+          class="flex-grow-1 d-flex flex-column overflow-hidden h-100"
+          id="mainbody"
+        >
+          <div id="main" class="main flex-grow-1 h-100 overflow-auto py-3">
+            <div id="editCss" class="container-fluid px-3">
+              <div role="document" class="row d-flex justify-content-center">
+                <div class="col-11">
+                  <div class="card border-top-0 primary-container">
+                    <div class="card-body p-3 border-top-0">
+                      <div>
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div
+                              class="col-2 sidebar-col collapse show d-md-flex pl-0"
+                              id="sidebar"
+                            >
+                              <nav
+                                class="nav flex-column flex-nowrap overflow-hidden"
+                              >
+                                <div class="box box-primary">
+                                  <div class="box-body box-profile">
+                                    <div>
+                                      <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                          <form
+                                            action=""
+                                            method="post"
+                                            id="form-image"
+                                          >
+                                            <input
+                                              type="file"
+                                              id="imageUpload"
+                                              accept=".png, .jpg, .jpeg"
+                                            />
+                                            <label for="imageUpload"></label>
+                                          </form>
+                                        </div>
+                                        <div class="avatar-preview">
+                                          <img
+                                            class="profile-user-img img-responsive img-circle"
+                                            id="imagePreview"
+                                            src="https://adminlte.io/themes/AdminLTE/dist/img/user3-128x128.jpg"
+                                            alt="User profile picture"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="nav" id="nav-tab" role="tablist">
+                                  <a
+                                    class="nav-item nav-link nav-link-upper active"
+                                    id="scripts-tab"
+                                    data-toggle="tab"
+                                    href="#myAccount"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                                  >
+                                    My Account</a
+                                  >
+                                  <a
+                                    class="nav-item nav-link nav-link-upper"
+                                    id="scripts-tab"
+                                    data-toggle="tab"
+                                    href="#personal"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                                  >
+                                    Personal Information</a
+                                  >
+                                  <a
+                                    class="nav-item nav-link nav-link-upper"
+                                    id="scripts-tab"
+                                    data-toggle="tab"
+                                    href="#emailNotif"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                                  >
+                                    Email Notifications</a
+                                  >
+                                  <a
+                                    class="nav-item nav-link nav-link-upper"
+                                    id="scripts-tab"
+                                    data-toggle="tab"
+                                    href="#discordNotif"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                                  >
+                                    Discord Notifications</a
+                                  >
+                                  <a
+                                    class="nav-item nav-link nav-link-upper"
+                                    id="scripts-tab"
+                                    data-toggle="tab"
+                                    href="#smsNotif"
+                                    role="tab"
+                                    aria-controls="nav-contact"
+                                    aria-selected="false"
+                                  >
+                                    SMS Notifications</a
+                                  >
+                                </div>
+                              </nav>
+                            </div>
+                            <div class="col-9">
+                              <div class="export-header ml-2">
+                                <h2>
+                                  <span
+                                    id="page-title"
+                                    class="font-weight-normal"
+                                    >My Account</span
+                                  >
+                                </h2>
+                                <span class="text-secondary"
+                                  >Use the menu on the left to navigate between
+                                  different settings pages.
+                                </span>
+                                <hr class="ml-2" />
+                              </div>
+
+                              <div class="tab-content" id="nav-tabContent">
+                                <!-- //NEW TAB -->
+                                <!-- //NEW TAB -->
+                                <!-- //NEW TAB -->
+
+                                <div
+                                  class="tab-pane fade"
+                                  id="nav-profile"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-profile-tab"
+                                >
+                                  <div class="col pt2">
+                                    <h3 class="font-weight-normal">Tasks</h3>
+                                  </div>
+                                </div>
+                                <!-- //myAccount PANE  Start -->
+
+                                <div
+                                  class="tab-pane fade active show"
+                                  id="myAccount"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-contact-tab"
+                                >
+                                  <!-- <div class="col menu-header pt-2">
+                                    <div class="control-container mb-3">
+                                      <button class="btn btn-sm btn-primary">
+                                        GRANT DOCUSIGN ACCESS
+                                      </button>
+                                    </div>
+                                  </div> -->
+                                  <div class="settings-group pl-3 pr-3">
+                                    <div class="form">
+                                      <!-- Input Row Start-->
+                                      <div class="form-group">
+                                        <label for="" class="font-bold"
+                                          >Payroll Number</label
+                                        >
+                                        <span class="d-flex flex-row">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            aria-describedby=""
+                                            disabled
+                                            value="<%= user.payroll %>"
+                                          />
+                                        </span>
+
+                                        <small class="form-text text-muted"
+                                          >This is your Halfords Payroll
+                                          Number.</small
+                                        >
+                                      </div>
+                                      <!-- Input Row End-->
+                                      <!-- Input Row Start-->
+                                      <div class="form-group">
+                                        <label class="font-bold" for=""
+                                          >Account Secret</label
+                                        >
+                                        <span class="d-flex flex-row">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            aria-describedby=""
+                                            disabled
+                                            value="<%= user._id %>"
+                                          />
+                                        </span>
+
+                                        <small class="form-text text-muted"
+                                          >This should not be given to anyone
+                                          except a Manager or Developer helping
+                                          to recover your account.</small
+                                        >
+                                      </div>
+                                      <!-- Input Row End-->
+                                      <!-- Input Row Start-->
+                                      <div class="form-group">
+                                        <label class="font-bold" for=""
+                                          >Google ID</label
+                                        >
+                                        <span class="d-flex flex-row">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            aria-describedby=""
+                                            disabled
+                                            value="<%= user.googleId %>"
+                                          />
+                                        </span>
+
+                                        <small class="form-text text-muted"
+                                          >This is your google account ID, if
+                                          linked. You can link by logging in
+                                          with Google on the login
+                                          screen.</small
+                                        >
+                                      </div>
+                                      <!-- Input Row End-->
+                                      <!-- Input Row Start-->
+                                      <div class="form-group">
+                                        <label class="font-bold" for=""
+                                          >Discord ID</label
+                                        >
+                                        <span class="d-flex flex-row">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            aria-describedby=""
+                                            disabled
+                                            value="<%= user.discordId %>"
+                                          />
+                                        </span>
+
+                                        <small class="form-text text-muted"
+                                          >This is your Discord account ID, if
+                                          linked. You can link by logging in
+                                          with Discord on the login
+                                          screen.</small
+                                        >
+                                      </div>
+                                      <!-- Input Row End-->
+                                    </div>
+                                    <div
+                                      class="settings-control-container d-flex flex-row-reverse"
+                                    >
+                                      <button
+                                        class="btn btn-secondary disabled"
+                                      >
+                                        Save Settings
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- //MY ACCOUNT END -->
+                                <!-- //personalInfo PANE  Start -->
+
+                                <div
+                                  class="tab-pane fade"
+                                  id="personal"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-contact-tab"
+                                >
+                                  <!-- <div class="col menu-header pt-2">
+                                  <div class="control-container mb-3">
+                                    <button class="btn btn-sm btn-primary">
+                                      GRANT DOCUSIGN ACCESS
+                                    </button>
+                                  </div>
+                                </div> -->
+                                  <div class="settings-group pl-3 pr-3">
+                                    <form
+                                      action="/update-personal"
+                                      method="post"
+                                    >
+                                      <div class="form">
+                                        <!-- Input Row Start-->
+                                        <div class="form-group">
+                                          <label for="" class="font-bold"
+                                            >Name</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="text"
+                                              name="nameForm"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              value="<%= user.displayName %>"
+                                            />
+                                          </span>
+
+                                          <small class="form-text text-muted"
+                                            >Your Name. Note: This will be the
+                                            name people identify you as on
+                                            Dashboards and Workbooks.</small
+                                          >
+                                        </div>
+                                        <!-- Input Row End-->
+                                        <!-- Input Row Start-->
+                                        <div class="form-group">
+                                          <label class="font-bold" for=""
+                                            >Email Address</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="email"
+                                              name="emailForm"
+                                              class="form-control"
+                                              placeholder=""
+                                              value="<%= user.email %>"
+                                            />
+                                          </span>
+
+                                          <small class="form-text text-muted"
+                                            >This is your registered email
+                                            address. This should be the same
+                                            email as both Discord and Google if
+                                            aplicable.</small
+                                          >
+                                        </div>
+                                        <!-- Input Row End-->
+                                        <!-- Input Row Start-->
+                                        <div class="form-group">
+                                          <label class="font-bold" for=""
+                                            >Phone Number</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="tel"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              name="phoneForm"
+                                              placeholder="07890 123456"
+                                              value="<%= user.phoneNumber %>"
+                                            />
+                                          </span>
+
+                                          <small class="form-text text-muted"
+                                            >Please provide this if you wish to
+                                            set up text notifications
+                                            later.</small
+                                          >
+                                        </div>
+                                        <!-- Input Row End-->
+                                        <!-- Input Row Start-->
+                                        <div class="form-group">
+                                          <label class="font-bold" for=""
+                                            >Discord ID</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              placeholder=""
+                                              value="<%= user.discordId %>"
+                                            />
+                                          </span>
+
+                                          <small class="form-text text-muted"
+                                            >This is your Discord account ID, if
+                                            linked. You can link by logging in
+                                            with Discord on the login
+                                            screen.</small
+                                          >
+                                        </div>
+                                        <!-- Input Row End-->
+                                      </div>
+                                      <div
+                                        class="settings-control-container d-flex flex-row-reverse"
+                                      >
+                                        <button
+                                          class="btn btn-primary"
+                                          type="submit"
+                                        >
+                                          Save Settings
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                                <!-- //MY ACCOUNT END -->
+                                <!-- //Email Notif Start -->
+                                <div
+                                  class="tab-pane fade"
+                                  id="emailNotif"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-contact-tab"
+                                >
+                                  <div class="menu-header pt-1 pl-2">
+                                    <div class="control-container">
+                                      <a class="" href="#"
+                                        ><i
+                                          class="fas fa-external-link-alt"
+                                        ></i>
+                                        View Access Logs
+                                      </a>
+                                    </div>
+                                  </div>
+                                  <div class="settings-group pl-2 pr-3">
+                                    <div class="form">
+                                      <div class="form-group">
+                                        <div class="d-flex mb-2 mt-1">
+                                          <div class="d-flex flex-column col-6">
+                                            <span class="mt-2"
+                                              >Directory Synchronization</span
+                                            >
+                                            <small class="text-secondary mt-1">
+                                              Enable directory synchronization
+                                              via LDAP</small
+                                            >
+                                          </div>
+                                          <div
+                                            class="d-flex flex-row-reverse col-1"
+                                          >
+                                            <div
+                                              class="custom-control custom-switch mt-3"
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                class="custom-control-input customInput"
+                                                id="customSwitch1c9"
+                                              />
+                                              <label
+                                                class="custom-control-label visible-label pl-1 font-bold"
+                                                for="customSwitch1c9"
+                                              >
+                                                Disabled</label
+                                              >
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="mt-4 header-container">
+                                        <h5>Server Configuration</h5>
+                                        <hr />
+                                      </div>
+                                      <!-- INPUT START -->
+                                      <div class="form-group">
+                                        <div class="d-flex flex-column mb-2">
+                                          <span for="">Server Type</span>
+                                          <small class="text-secondary"
+                                            >Select which type of LDAP server
+                                            you will connect to</small
+                                          >
+                                        </div>
+                                        <div
+                                          class="custom-control custom-radio pb-1"
+                                        >
+                                          <input
+                                            type="radio"
+                                            id="customRadio1"
+                                            name="customRadio"
+                                            class="custom-control-input"
+                                          />
+                                          <label
+                                            class="custom-control-label font-bold"
+                                            for="customRadio1"
+                                            >Active Directory</label
+                                          >
+                                        </div>
+                                        <div
+                                          class="custom-control custom-radio pb-1"
+                                        >
+                                          <input
+                                            type="radio"
+                                            id="customRadio2"
+                                            name="customRadio"
+                                            class="custom-control-input"
+                                          />
+                                          <label
+                                            class="custom-control-label font-bold"
+                                            for="customRadio2"
+                                            >389 Directory Server</label
+                                          >
+                                        </div>
+                                        <div
+                                          class="custom-control custom-radio"
+                                        >
+                                          <input
+                                            type="radio"
+                                            id="customRadio2"
+                                            name="customRadio"
+                                            class="custom-control-input"
+                                          />
+                                          <label
+                                            class="custom-control-label font-bold"
+                                            for="customRadio2"
+                                            >OpenLDAP</label
+                                          >
+                                        </div>
+                                      </div>
+                                      <div class="input-grp col-8">
+                                        <div class="form-group">
+                                          <label class="font-bold" for=""
+                                            >Server Address</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              placeholder=""
+                                              value="128.0.0.7
+                                              " />
+                                            <button
+                                              class="btn btn-outline-secondary btn-copy ml-2 d-flex flex-row"
+                                            >
+                                              <div class="d-flex flex-row">
+                                                <i class="far fa-copy"></i>
+                                              </div></button
+                                          ></span>
+
+                                          <small class="form-text text-muted"
+                                            >Enter the IP address or hostname of
+                                            the LDAP server</small
+                                          >
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="font-bold" for=""
+                                            >Server Port</label
+                                          >
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              placeholder=""
+                                              value="443
+                                            " />
+                                            <button
+                                              class="btn btn-outline-secondary btn-copy ml-2 d-flex flex-row"
+                                            >
+                                              <div class="d-flex flex-row">
+                                                <i class="far fa-copy"></i>
+                                              </div></button
+                                          ></span>
+
+                                          <small class="form-text text-muted"
+                                            >Enter the port used on the LDAP
+                                            server</small
+                                          >
+                                        </div>
+                                      </div>
+                                      <div class="mt-4 header-container">
+                                        <h5>Security</h5>
+                                        <hr />
+                                      </div>
+                                      <!-- //NEXT GROUP -->
+                                      <!-- //NEXT GROUP -->
+                                      <div class="form-group">
+                                        <div class="d-flex mb-2">
+                                          <div class="d-flex flex-column col-6">
+                                            <span class="mt-2"
+                                              >Transport Layer Security</span
+                                            >
+                                            <small
+                                              class="text-secondary mt-1 pr-5"
+                                              >Select whether or not to use TLS
+                                              when connecting to LDAP</small
+                                            >
+                                          </div>
+                                          <div
+                                            class="d-flex flex-row-reverse col-1"
+                                          >
+                                            <div
+                                              class="custom-control custom-switch mt-3"
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                class="custom-control-input customInput"
+                                                id="customSwitch1c9"
+                                              />
+                                              <label
+                                                class="custom-control-label visible-label pl-1 font-bold"
+                                                for="customSwitch1c9"
+                                              >
+                                                Disabled</label
+                                              >
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-6 form-group">
+                                          <label class="font-bold" for="">
+                                            Certificate</label
+                                          >
+
+                                          <div class="upload-container">
+                                            <div class="form-group">
+                                              <div
+                                                class="input-group upload-group dotted d-flex justify-content-center"
+                                              >
+                                                <div
+                                                  class="inner d-flex flex-column justify-content-center text-center m-3"
+                                                >
+                                                  <i
+                                                    class="fas fa-file-upload modal-upload-icon-small mb-2 mt-2"
+                                                  ></i>
+                                                  <span>Drag file here</span>
+                                                  <span class="">- or -</span>
+                                                  <!-- <button class="btn btn-info">Select file</button> -->
+                                                  <span>
+                                                    <a href=""
+                                                      >Select file from
+                                                      computer</a
+                                                    >
+                                                  </span>
+                                                </div>
+                                              </div>
+                                              <small
+                                                class="form-text text-muted"
+                                                >Upload the certificate file
+                                                that will be stored in the
+                                                server</small
+                                              >
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label class="font-bold" for="">
+                                            Base Distinguished Name</label
+                                          >
+
+                                          <span class="d-flex flex-row">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              aria-describedby=""
+                                              placeholder=""
+                                              value="dc=processmaker,dc=test
+                                              " />
+                                            <button
+                                              class="btn btn-outline-secondary btn-copy ml-2 d-flex flex-row"
+                                            >
+                                              <div class="d-flex flex-row">
+                                                <i class="far fa-copy"></i>
+                                              </div></button
+                                          ></span>
+
+                                          <small class="form-text text-muted"
+                                            >Enter the base distinguished name
+                                            to use when connecting to this LDAP
+                                            server</small
+                                          >
+                                        </div>
+                                        <div class="col-8">
+                                          <div class="form-group">
+                                            <label class="font-bold" for="">
+                                              Username</label
+                                            >
+
+                                            <span class="d-flex flex-row">
+                                              <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-describedby=""
+                                                placeholder=""
+                                                value="Administrator@processmaker.test
+
+                                              " />
+                                              <button
+                                                class="btn btn-outline-secondary btn-copy ml-2 d-flex flex-row"
+                                              >
+                                                <div class="d-flex flex-row">
+                                                  <i class="far fa-copy"></i>
+                                                </div></button
+                                            ></span>
+
+                                            <small class="form-text text-muted"
+                                              >Enter the username to use when
+                                              connecting to LDAP</small
+                                            >
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-bold" for="">
+                                              Password</label
+                                            >
+
+                                            <span class="d-flex flex-row">
+                                              <input
+                                                type="password"
+                                                class="form-control"
+                                                aria-describedby=""
+                                                placeholder=""
+                                                value="dc=processmaker,dc=test
+                                              " />
+                                              <button
+                                                class="btn btn-outline-secondary btn-copy ml-2 d-flex flex-row"
+                                              >
+                                                <div class="d-flex flex-row">
+                                                  <i class="far fa-copy"></i>
+                                                </div></button
+                                            ></span>
+
+                                            <small class="form-text text-muted"
+                                              >Enter the password to use when
+                                              connecting to LDAP</small
+                                            >
+                                          </div>
+                                        </div>
+                                        <hr />
+                                      </div>
+                                      <!-- INPUT END -->
+                                    </div>
+                                    <div
+                                      class="settings-control-container d-flex flex-row-reverse"
+                                    >
+                                      <button class="btn btn-secondary">
+                                        SAVE SETTINGS
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <!-- card end -->
+                                </div>
+                                <!-- //Email Notif END -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- NAV BAR END-->
-      <main class="flex-1 p-4">
-        <div class="p-4"></div>
-        <div class="flex justify-center">
-          <h1 class="mb-6 text-3xl text-white font-bold underline">
-            My Settings
-          </h1>
-        </div>
-        <div class="flex justify-center">
-          <div id="settingsDisplay">
-            <div class="container">
-              <h1 id="panelTitle">Account Information</h1>
-              <form
-                action="/update-settings"
-                method="post"
-                class="p-6 rounded-lg shadow-md"
-              >
-                <label for="userId">Discord ID</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm inputDisabled"
-                  type="number"
-                  name="userId"
-                  id="userId"
-                  value="<%= user.discordId %>"
-                  disabled
-                />
-                <br />
-                <label for="username">Username</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  type="text"
-                  name="userId"
-                  id="userId"
-                  value="<%= user.username %>"
-                />
-                <br />
-                <label for="accountSecret">Account Secret</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm inputDisabled"
-                  type="password"
-                  name="accountSecret"
-                  id="accountSecret"
-                  value="<%= user.discordId %> <button></button>"
-                  disabled
-                />
-                <br>
-                <label for="showAccSecret">Show Account Secret</label>
-                <input type="checkbox" id="showAccSecret" onclick="showSecret()" />
-                <br>
-                <div id="FormButtons">
-                  <button
-                    type="submit"
-                    class="submitBut"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Save
-                  </button>
-                  <br />
-                  <button
-                    type="reset"
-                    class="resetBut"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </form>
-            </div>
-            <!-- BREAK -->
-          </div>
-          <!-- BREAK -->
-          <div id="settingsDisplay">
-            <div class="container">
-              <form
-                action="/update-settings"
-                method="post"
-                class="p-6 rounded-lg shadow-md"
-              >
-                <label for="userId">Discord ID</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  type="number"
-                  name="userId"
-                  id="userId"
-                  value="<%= user.discordId %>"
-                  disabled
-                />
-                <br />
-                <label for="userId">Username</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  type="text"
-                  name="userId"
-                  id="userId"
-                  value="<%= user.username %>"
-                />
-                <br />
-                <label for="userId">Discord ID</label>
-                <input
-                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  type="number"
-                  name="userId"
-                  id="userId"
-                  value="<%= user.discordId %>"
-                  disabled
-                />
-                <div id="FormButtons">
-                  <button
-                    type="submit"
-                    class="submitBut"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Save
-                  </button>
-                  <br />
-                  <button
-                    type="reset"
-                    class="resetBut"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </form>
-            </div>
-            <!-- BREAK -->
-          </div>
-        </div>
-      </main>
     </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
   </body>
 </html>
-<script>
-  function showSecret() {
-  var x = document.getElementById("accountSecret");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
-</script>
+
 <style>
-  .bg-purp {
-    color: rgb(255, 255, 255);
-    background-color: rgb(108, 0, 128);
+  .profile-user-img {
+    width: 125px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .avatar-edit {
+    position: absolute;
+    right: 40px;
+    z-index: 1;
+    top: 90px;
   }
   input {
+    display: none;
+    + label {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0;
+      border-radius: 100%;
+      background: #ffffff;
+      border: 1px solid #d2d6de;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      font-weight: normal;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+      }
+      &:after {
+        content: "\f030";
+        font-family: "FontAwesome";
+        color: #337ab7;
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        line-height: 34px;
+        margin: auto;
+      }
+    }
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+  }
+  a {
+    color: #0872c2;
+  }
+
+  .text-primary {
+    color: #0872c2 !important;
+  }
+
+  .text-info {
+    color: #114a77 !important;
+  }
+
+  .text-success {
+    color: #00875a !important;
+  }
+
+  .dotted {
+    border: 2px dashed rgba(128, 128, 128, 0.529);
+  }
+
+  #sidebar {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    flex: 0 0 20.666667%;
+    max-width: 20.666667%;
+  }
+
+  #mainbody {
+    height: 100%;
+    overflow: hidden !important;
+  }
+
+  #main {
+    overflow: auto;
+  }
+
+  div#main {
     background-color: inherit;
   }
+
+  h5,
+  .fa-angle-down {
+    color: #0872c2;
+  }
+  h5 {
+    font-weight: 500;
+    color: #212529;
+  }
+
+  .align-items-center {
+    align-items: center !important;
+  }
+
+  .ml-auto {
+    margin-left: auto !important;
+  }
+
+  .h-100 {
+    height: 100% !important;
+  }
+
+  .left-bar {
+    padding-right: 0px !important;
+    width: 300px !important;
+  }
+
+  .sidebar-right {
+    width: 300px;
+  }
+
+  .card.h-100.rounded-0.border-top-0.border-bottom-0.border-left-0 {
+    width: 300 px;
+  }
+
+  /* // Left Sidebar */
+
+  .list-group-flush .list-group-item {
+    border-radius: 3px;
+  }
+
+  .list-group-item {
+    width: 100%;
+    padding: 0.3m;
+    margin: 0.2rem;
+    /* -webkit-box-shadow: 0 5px 3px -3px rgb(60 64 67 / 5%);
+    -moz-box-shadow: 0 5px 3px -3px rgb(60 64 67 / 5%);
+    box-shadow: 0 5px 3px -3px rgb(60 64 67 / 5%); */
+    border-top: 0px;
+    border-bottom: 0px;
+    cursor: grab;
+  }
+
+  .list-group-item:hover {
+    background-color: rgba(220, 220, 220, 0.652);
+  }
+
+  div#controls {
+    padding-top: 1 rem;
+    background: #f7f7f7;
+    align-items: right;
+    display: flex;
+    justify-content: right;
+  }
+  /*
+  End LEft side bar */
+
+  .list-group-item > i,
+  .page-menu {
+    color: rgb(108, 117, 125);
+  }
+
+  .card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+
+  .card-icon {
+    font-size: 1.1rem;
+  }
+
+  .top-header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .form-group .form-control-icon {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375 rem;
+    height: 2.375 rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+    margin-left: 10px;
+  }
+
+  i.fas.fa-angle-down.rotate-icon {
+    font-size: 1.3rem;
+    color: #212529;
+  }
+
+  .fa-home {
+    color: #0872c2;
+  }
+
+  i.far.fa-copy {
+    margin-top: 3px;
+  }
+
+  .btn-copy {
+    border: 1px solid #ced4da !important;
+    background-color: #ced4da33 !important;
+  }
+
+  .btn-copy:hover {
+    color: #606970;
+  }
+
+  input.form-control {
+    background-color: #f6f8fa;
+  }
+  .btn.btn-outline-secondary.btn-copy.ml-2.d-flex.flex-row:active {
+    color: #606970;
+    background-color: hsl(228, 14.3%, 93.1%) !important;
+  }
+
+  .btn.btn-outline-secondary.btn-copy.ml-2.d-flex.flex-row:focus {
+    box-shadow: unset !important;
+  }
+
+  /* .disabled-btn{
+    color:grey;
+    font-style: italic;
+    pointer-events:none;
+  } */
+
+  .btn-primary {
+    background-color: #0872c2;
+    outline-color: #0872c2;
+  }
+
+  .btn-success {
+    background-color: #00875a;
+    outline-color: #00875a;
+  }
+
+  button.btn.btn-primary.dropdown-toggle.dropdown-toggle-split {
+    border-left-color: white;
+  }
+
+  input#searchBar {
+    background-color: #aaaaaa1a;
+  }
+
+  .element-icon-group {
+    color: rgb(89, 89, 89);
+  }
+
+  .element-icon {
+    font-size: 1.4rem;
+    /* background-color: rgba(105, 105, 105, 0.07); */
+    padding: 0.3rem;
+    border-radius: 3px;
+  }
+
+  .left-card-body {
+    padding: 0.1rem !important;
+  }
+  .fa-grip-vertical {
+    color: rgb(153, 153, 153);
+  }
+
+  .element-name {
+    font-weight: 500;
+  }
+
+  .top-right-button-group {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+
+  .btn-outline-info {
+    border-color: #114a77;
+    color: #114a77;
+  }
+
+  .btn-info {
+    background-color: #114a77;
+    border-color: #114a77;
+  }
+
+  /* a:active,
+  a:hover {
+    text-decoration: none;
+  } */
+
+  .save-btn-group {
+    height: 35px;
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  button > .fa-angle-down:hover,
+  button > .fa-angle-down:active,
+  .dropdown-toggle-split:hover {
+    color: white !important;
+  }
+
+  .btn-outline-primary {
+    color: #0872c2;
+    border-color: #0872c2;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #0872c2;
+  }
+
+  .row.design-preview-bar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /*
+  cleaning up slats */
+  .card {
+    border-radius: 0px;
+    border-right: 0px;
+    border-left: 0px;
+  }
+
+  .undo-redo-btn {
+    border: 0px;
+    color: #212529;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+  .undo-redo-btn:hover {
+    background-color: transparent;
+    border: 0px;
+    text-decoration: underline;
+    color: #5b626a !important;
+    font-weight: 500;
+  }
+
+  .page-select-group {
+    margin-bottom: 0rem;
+  }
+
+  button.btn.btn-outline-secondary.dropdown-toggle {
+    /* border-bottom-right-radius: 0; */
+    border-bottom-right-radius: 0.25rem !important;
+    border-top-right-radius: 0.25rem !important;
+  }
+
+  .btn-outline-secondary:not(:disabled):not(.disabled).active,
+  .btn-outline-secondary:not(:disabled):not(.disabled):active,
+  .show > .btn-outline-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    font-weight: 900;
+  }
+
+  .separator {
+    border-right: 1px solid rgb(227, 231, 236);
+    height: 100px;
+    margin-left: 0.5rem;
+    margin-right: 0.7rem;
+  }
+
+  .input-group {
+    width: unset;
+  }
+
+  /* .new-page-btn {
+    width: 100px;
+  } */
+
+  .page-group {
+    border-radius: 3px;
+  }
+  .page-group:hover {
+    background-color: rgba(220, 220, 220, 0.652);
+    cursor: pointer;
+  }
+
+  .page-group-active {
+    background-color: rgba(220, 220, 220, 0.652);
+  }
+
+  .page-group-title {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .page-group-title-active > h5 {
+    font-weight: 600;
+  }
+
+  span.new-page-btn.text-center {
+    margin-top: 0.6rem;
+  }
+
+  h5 {
+    margin-bottom: unset;
+  }
+
+  .page-menu {
+    font-size: 1.5rem;
+  }
+
+  .page-container-single-control-top,
+  .page-container-single-inner {
+    margin-left: 1rem;
+    margin-top: 1rem;
+  }
+
+  .page-container-single-inner {
+    /* margin: 1rem; */
+    width: 300px;
+    height: 400px;
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%),
+      0px 2px 6px 2px rgb(60 64 67 / 10%);
+  }
+
+  .page-container-single-outer {
+    max-width: 300px;
+    margin-left: 1rem;
+  }
+
+  .deactive {
+    visibility: hidden;
+  }
+
+  .page-control {
+    color: #5b626a;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.125em;
+    border-radius: 8px;
+  }
+
+  .card-info-group,
+  .card-info-group-sub,
+  .header-button {
+    font-size: 16px;
+  }
+
+  .body-card {
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%),
+      0px 2px 6px 2px rgb(60 64 67 / 10%);
+    border: 0px;
+  }
+
+  .col-2 {
+    padding-right: 10px;
+  }
+
+  .col-8 {
+    padding-left: unset !important;
+  }
+  .col-6 {
+    padding-left: unset !important;
+  }
+
+  .container-header-action {
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.1s ease-out 0s,
+      box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+    white-space: nowrap;
+    background: none;
+    cursor: pointer;
+
+    line-height: 2.28571em;
+    padding: 0px 2px;
+    vertical-align: middle;
+    width: 2.28571em;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: var(--ds-text, #42526e) !important;
+  }
+
+  .container-nav-link-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header-chevron {
+    color: #42526e;
+  }
+
+  .active-background {
+    background-color: rgba(208, 215, 222, 0.24);
+  }
+
+  .header-active-not-selected {
+    font-weight: 600;
+  }
+
+  .nav {
+    flex-direction: column;
+  }
+
+  .nav-link:not(:disabled):not(.disabled).active,
+  .nav-link:not(:disabled):not(.disabled):active,
+  .show > .nav-link.dropdown-toggle::after {
+    color: #42526e;
+    background-color: #d0d7de3d;
+    border-color: #d0d7de3d;
+    font-weight: 600;
+  }
+
+  .nav-link:not(:disabled):not(.disabled).active::after,
+  .nav-link:not(:disabled):not(.disabled):active::after {
+    position: absolute;
+    left: -8px;
+    width: 4px;
+    height: 24px;
+    content: "";
+    background-color: #0872c2;
+    border-radius: 6px;
+  }
+
+  .nav-link-header:not(:disabled):not(.disabled).active::after,
+  .nav-link-header:not(:disabled):not(.disabled):active::after {
+    position: absolute;
+    left: -8px;
+    width: 4px;
+    height: 24px;
+    content: "";
+    background-color: #0872c2;
+    border-radius: 6px;
+  }
+
+  .nav-link-header:not(:disabled):not(.disabled).active,
+  .nav-link-header:not(:disabled):not(.disabled):active,
+  .show > .nav-link-header.dropdown-toggle:active {
+    font-weight: 600;
+    color: #42526e;
+  }
+
+  .nav-link:hover {
+    /* background-color: #E6EFFC; */
+    background-color: #dadce033;
+    color: #42526e;
+  }
+
+  .nav-link-header,
+  .nav-link {
+    color: #42526e;
+    text-decoration: none !important;
+  }
+
+  .nav-link {
+    border-radius: 4px;
+
+    padding: 0.6rem;
+  }
+
+  .item-active {
+    background-color: rgba(208, 215, 222, 0.24);
+  }
+
+  .item-active::after,
+  .header-active::after {
+    position: absolute;
+
+    left: -8px;
+    width: 4px;
+    height: 24px;
+    content: "";
+    background-color: #0872c2;
+    border-radius: 6px;
+  }
+
+  .nav-icon:not(:disabled):not(.disabled).active,
+  .nav-icon:not(:disabled):not(.disabled):active,
+  .show > .nav-icon.dropdown-toggle {
+    color: #0052cc;
+  }
+
+  .font-bold {
+    font-weight: 500;
+  }
+
+  .font-bolder {
+    font-weight: 600;
+  }
+
+  div#nav-tab {
+    font-size: 16px;
+  }
+
+  nav.nav.flex-column.flex-nowrap.overflow-hidden {
+    width: 100%;
+  }
+
+  .tab-pane {
+    height: 100%;
+  }
+
+  .general-item-group {
+    border-radius: 4px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .general-item-badge-success {
+    background-color: #00875a;
+  }
+
+  .badge-primary {
+    background-color: #0872c2;
+  }
+
+  .fas.fa-undo {
+    font-size: 1rem;
+  }
+
+  .fa-external-link-alt {
+    font-size: 14px;
+  }
+
+  .fas.fa-minus,
+  .fas.fa-plus {
+    font-size: 12px;
+  }
+
+  /* .bi-chevron-down{
+    margin-left: 2.4rem;
+  } */
+
+  .fa-chevron-right,
+  .fa-chevron-down,
+  .fa-chevron-up,
+  .fa-chevron-left {
+    font-size: 0.75rem;
+  }
 </style>
+<script>
+  // Page title
+  const pageTitle = document.querySelector("#page-title");
+  //upper level nav links
+  const upperNavLinks = document.querySelectorAll(".nav-link-upper");
+
+  upperNavLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      //update the page title when changing top-menu items
+      if (pageTitle.innerText !== link.innerText) {
+        pageTitle.innerText = link.innerText;
+      }
+    });
+  });
+</script>

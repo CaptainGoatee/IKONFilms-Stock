@@ -1,31 +1,35 @@
 {
   "dependencies": {
+    "@types/passport-google-oauth20": "^2.0.16",
+    "body-parser": "^1.20.2",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
     "http-errors": "^2.0.0",
+    "install": "^0.13.0",
     "mongoose": "^8.4.0",
-    "mysql2": "^3.10.2",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.3",
+    "npm": "^10.8.1",
     "passport": "^0.7.0",
-    "passport-discord": "^0.1.4"
+    "passport-discord": "^0.1.4",
+    "passport-google-oauth": "^2.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-json": "^1.2.0",
+    "passport-local": "^1.0.0"
   },
   "scripts": {
-    "start": "nodemon app.js",
     "build:css": "tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --minify"
   },
-  "name": "dnrp-trust-portal",
-  "version": "0.5.0",
+  "name": "goatee-test-web",
+  "version": "1.0.0",
   "main": "app.js",
-  "author": "_javachip_",
+  "author": "",
   "license": "ISC",
-  "description": "A vehicle Garage for DNRP",
+  "description": "",
   "devDependencies": {
     "tailwindcss": "^3.4.3"
-  },
-  "keywords": [
-    "Vehicle"
-  ]
+  }
 }

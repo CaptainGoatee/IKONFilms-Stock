@@ -1,17 +1,43 @@
-const router = require('express').Router();
-const passport = require('passport');
+/** @format */
 
-router.get('/discord', passport.authenticate('discord'));
+const router = require("express").Router();
+const passport = require("passport");
+const crypto = require("crypto");
+const User = require("../models/User");
+router.get("/login/google", passport.authenticate("google"));
+router.get("/discord", passport.authenticate("discord"));
 
-router.get('/discord/callback', passport.authenticate('discord', {
-  failureRedirect: '/'
-}), (req, res) => {
-  res.redirect('/dashboard');
-});
+router.get(
+  "/oauth2/redirect/google",
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    failureMessage: true,
+  }),
+  function (req, res) {
+    res.redirect("/dashboard");
+  }
+);
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
+router.get(
+  "/discord/callback",
+  passport.authenticate("discord", {
+    failureRedirect: "/login",
+    failureMessage: true,
+  }),
+  function (req, res) {
+    res.redirect("/dashboard");
+  }
+);
+
+
+router.post("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+
 });
 
 module.exports = router;
