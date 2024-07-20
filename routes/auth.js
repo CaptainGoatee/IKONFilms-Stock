@@ -14,7 +14,7 @@ router.get(
     failureMessage: true,
   }),
   function (req, res) {
-    res.redirect("/dashboard");
+    res.redirect("/home");
   }
 );
 
@@ -25,7 +25,7 @@ router.get(
     failureMessage: true,
   }),
   function (req, res) {
-    res.redirect("/dashboard");
+    res.redirect("/home");
   }
 );
 

@@ -1,0 +1,1 @@
+var e,t=Object.defineProperty,r=Object.getOwnPropertyDescriptor,o=Object.getOwnPropertyNames,p=Object.prototype.hasOwnProperty;module.exports=(e={},((e,n,c,l)=>{if(n&&"object"==typeof n||"function"==typeof n)for(let a of o(n))p.call(e,a)||a===c||t(e,a,{get:()=>n[a],enumerable:!(l=r(n,a))||l.enumerable});return e})(t({},"__esModule",{value:!0}),e));

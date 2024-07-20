@@ -1,0 +1,5 @@
+import { a } from './chunk-7SWSAHI5.js';
+
+var o=class t{constructor(e){if(e!=null)return t.all[t.all.findIndex(i=>i.identifier===e)]}static get all(){return this.defaults().SymbologyDescriptions}get activeSymbolCountRange(){return this._activeSymbolCountRange}get defaultSymbolCountRange(){return this._defaultSymbolCountRange}get identifier(){return this._identifier}get isAvailable(){return this._isAvailable}get isColorInvertible(){return this._isColorInvertible}get readableName(){return this._readableName}get supportedExtensions(){return [...this._supportedExtensions]}get symbology(){return this.identifier}static forIdentifier(e){return t.all.findIndex(r=>r.identifier===e)===-1?null:new t(e)}static fromJSON(e){let i=new t;return i._identifier=e.identifier,i._readableName=e.readableName,i._isAvailable=e.isAvailable,i._isColorInvertible=e.isColorInvertible,i._activeSymbolCountRange=a.fromJSON(e.activeSymbolCountRange),i._defaultSymbolCountRange=a.fromJSON(e.defaultSymbolCountRange),i._supportedExtensions=new Set(e.supportedExtensions),i}};
+
+export { o as a };

@@ -6,7 +6,7 @@
 body, .main {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  color: #ff9919;
+  color: #13a6cf;
   background-color: #464646;
 }
 .text-red {
@@ -37,7 +37,7 @@ body, .main {
 }
 
 .topnav a.active {
-  background-color: #ff9919;
+  background-color: #13a6cf;
   color: #f6f6f6;
 }
 
@@ -97,7 +97,7 @@ input {
   margin: 5px;
 }
 .orangeButton {
-  background-color: #ff9919;
+  background-color: #13a6cf;
   color: black;
   border-radius: 5px;
   padding: 12px 16px 12px 16px;

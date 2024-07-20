@@ -39,7 +39,7 @@ module.exports = (passport) => {
               if (err) {
                 console.log(err);
               }
-              res.redirect("/dashboard");
+              res.redirect("/home");
             });
           });
         }

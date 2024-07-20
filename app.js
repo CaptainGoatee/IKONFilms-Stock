@@ -62,7 +62,7 @@ app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/dashboard");
+    return res.redirect("/home");
   }
   res.render("login", { error: null });
 });
@@ -79,7 +79,7 @@ app.get(
     failureMessage: true,
   }),
   function (req, res) {
-    res.redirect("/dashboard");
+    res.redirect("/home");
   }
 );
 
@@ -119,7 +119,7 @@ app.post("/login/password", async function (req, res, next) {
             if (err) {
               console.log(err);
             }
-            res.redirect("/dashboard");
+            res.redirect("/home");
           });
         });
       }
@@ -130,13 +130,20 @@ app.post("/login/password", async function (req, res, next) {
 });
 app.get("/login", (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/dashboard");
+    return res.redirect("/home");
   }
   res.render("login", { error: null });
 });
+
+app.get("/scan-in", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login");
+  }
+  res.render("scan-in", { error: null });
+});
 app.get("/create_account", (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/dashboard");
+    return res.redirect("/home");
   }
   res.render("signup", {
     error:
@@ -150,7 +157,7 @@ app.get(
     failureRedirect: "/",
   }),
   async (req, res) => {
-    res.redirect("/dashboard");
+    res.redirect("/home");
   }
 );
 
@@ -163,7 +170,7 @@ app.get("/logout", function (req, res, next) {
   });
 });
 
-app.get("/dashboard", async (req, res) => {
+app.get("/home", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
@@ -208,7 +215,7 @@ app.post("/update-users", async (req, res) => {
 
   const user = await User.findById(req.user._id);
   if (!user || user.access == "Workshop" || user.access == "Office") {
-    return res.redirect("/dashboard");
+    return res.redirect("/home");
   }
 
   try {

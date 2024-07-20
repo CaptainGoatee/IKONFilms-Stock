@@ -1,0 +1,3 @@
+var s=class o{get enabledExtensions(){return [...this.extensions]}get symbology(){return this._symbology}static fromJSON(e){let t=new o;return t.extensions=new Set(e.extensions),t.isEnabled=e.enabled,t.isColorInvertedEnabled=e.colorInvertedEnabled,t.checksums=new Set(e.checksums),t.activeSymbolCounts=e.activeSymbolCounts,t}setExtensionEnabled(e,t){t?this.extensions.add(e):this.extensions.delete(e);}toJSONObject(){return {activeSymbolCounts:[...this.activeSymbolCounts],checksums:[...this.checksums],colorInvertedEnabled:this.isColorInvertedEnabled,enabled:this.isEnabled,extensions:[...this.extensions]}}};
+
+export { s as a };

@@ -39,13 +39,18 @@
   </script>
   <body class="page">
     <div class="topnav" id="myTopnav">
-      <a href="/dashboard" class="active">Dashboard</a>
-      <a href="/manage-jobs">Manage Jobs</a>
-      <a href="/users">Manage Users</a>
-      <a href="/tyres">Tyres</a>
-      <a href="/settings">Settings</a>
+      <a href="/home" class="active">Home</a>
+      <a href="/scan-in">Scan In</a>
+      <a href="/scan-out">Scan Out</a>
       <% if (user.access == "Developer" ) {%>
-      <a href="/progress-board">Job Dashboard</a>
+      <a href="/create-asset">Create Asset</a>
+      <a href="/create-asset">Update Asset</a>
+      <a href="/create-asset">Remove Asset</a>
+      <% }%>
+      <a href="/tyres">Asset Logs</a>
+      <a href="/settings">Search</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/asset-viewer">Asset Viewer</a>
       <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
@@ -53,9 +58,14 @@
     </div>
     <div class="flex">
       <main class="flex-1 p-4">
-        <div class="flex justify-center">
-          <h1 class="text-2xl font-bold mb-4">My Worksheet</h1>
+        <div id="pageTitleName" class="flex justify-center">
+          <h1 class="text-2xl font-bold mb-4">Assets</h1>
         </div>
+        <div id="pageTitleDescription" class="flex justify-center">
+          <h2>These are the assets that are currently in your possesion.</h2>
+        </div>
+        <div class="p-4"></div>
+
         <div class="bg-white shadow-md rounded-lg p-4">
           <table class="w-full">
             <thead>

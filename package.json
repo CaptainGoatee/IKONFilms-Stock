@@ -18,7 +18,9 @@
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-json": "^1.2.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "scandit-web-datacapture-barcode": "^6.24.2",
+    "scandit-web-datacapture-core": "^6.24.2"
   },
   "scripts": {
     "build:css": "tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --minify"

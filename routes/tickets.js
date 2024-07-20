@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Ticket = require('../models/Ticket');
 
-router.get('/dashboard', async (req, res) => {
+router.get('/home', async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/');
   }
