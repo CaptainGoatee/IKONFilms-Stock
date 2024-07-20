@@ -23,12 +23,12 @@
   "scripts": {
     "build:css": "tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --minify"
   },
-  "name": "goatee-test-web",
+  "name": "ikonstudios",
   "version": "1.0.0",
   "main": "app.js",
-  "author": "",
+  "author": "james Sells",
   "license": "ISC",
-  "description": "",
+  "description": "Asset management for IKONSTUDIOS LTD",
   "devDependencies": {
     "tailwindcss": "^3.4.3"
   }
