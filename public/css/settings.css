@@ -1,0 +1,42 @@
+/** @format */
+
+* {
+}
+
+#settingsDisplay {
+  color: white;
+  width: 50rem;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#FormButtons {
+  display: flex;
+}
+
+#FormButtons button {
+  margin: 1rem;
+  font-style: bold;
+}
+#submitBut {
+  justify-content: flex-start;
+}
+#resetBut {
+  justify-content: flex-end;
+}
+#panelTitle {
+  font-weight: 800;
+  font-size: larger;
+  padding-left: 2rem;
+  padding-top: 2rem;
+  text-decoration: underline;
+}
+.inputDisabled {
+  cursor: not-allowed;
+}
+input[type="password"] {
+  -webkit-text-security: disc;
+}

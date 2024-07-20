@@ -1,0 +1,80 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uh Oh!</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="page">
+    <header>
+      <div class="title"></div>
+    </header>
+
+    <div class="loginContainer">
+      <img class="image" src="/images/daynnightlogo.png" alt="DNRPLogo" />
+      <div
+        id="messageBoxWithButton"
+        class="flex items-center justify-center mt-1"
+      >
+        <div class="bg-white p-8 rounded-lg shadow-md w-32 pt-40">
+          <h1 class="text-2xl font-bold mb-4">
+            It appears you're not in our discord,
+            <br />Go ahead and join below!
+          </h1>
+          <div style="width: 480px" class="flex items-center justify-center">
+            <iframe
+              id="gif"
+              class="mb-4"
+              frameBorder="0"
+              height="174"
+              src="https://giphy.com/embed/uHBydtNNgFoj8WhH8M/video"
+              width="240"
+            ></iframe>
+          </div>
+          <a href="https://discord.gg/dnrp">
+            <button
+              class="bg-blue-500 w-full text-white py-2 px-4 rounded flex items-center justify-center"
+            >
+              Join DNRP discord!
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .loginContainer {
+    padding-top: 20em;
+  }
+  /* #gif {
+    border-top: 3px black solid;
+    border-bottom: 3px black solid;
+  } */
+  .image {
+    height: 15rem;
+    position: relative;
+    margin: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 20%;
+    left: 50%;
+    margin-right: -50%;
+  }
+  button:hover {
+    background-color: #1a1a1a;
+  }
+
+  /* styles.css */
+</style>

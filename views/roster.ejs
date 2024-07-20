@@ -1,0 +1,341 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roster</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/navmenu.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="text-white">
+    <div class="flex">
+      <main class="flex-1 p-4 max-w-fit page">
+        <h1 class="text-3xl font-bold mb-4 text-white underline items-center">
+          Support Team Roster
+        </h1>
+        <!-- NAV BAR START-->
+        <div id="nav-bar">
+          <div id="nav-header">
+            <a id="nav-title" href="/"
+              ><img
+                class="supportIcon"
+                src="./images/daynnightlogo.png"
+                alt="SupportLogo"
+              /><i class="title"> Support Team</i></a
+            >
+            <hr />
+          </div>
+          <div id="nav-content">
+            <a class="nav-button" href="/">
+              <i class="fas fa-desktop"></i><span>My Dashboard</span>
+            </a>
+            <a class="nav-button" href="/my-tickets">
+              <i class="fas fa-ticket"></i><span>My Tickets</span>
+            </a>
+            <a class="nav-button" href="/new-ticket">
+              <i class="fas fa-receipt"></i><span>Log a Ticket</span>
+            </a>
+            <a class="nav-button" href="/roster">
+              <i class="fas fa-address-book"></i><span>Roster</span>
+            </a>
+            <a
+              class="nav-button"
+              href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
+            >
+              <i class="fas fa-book"></i><span>Knowledgebase</span>
+            </a>
+            <% if (user.isStaff) { %>
+            <hr />
+            <a class="nav-button" href="/lsa-dashboard">
+              <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
+            </a>
+            <a class="nav-button" href="/punishments">
+              <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
+            </a>
+            <a class="nav-button" href="/ticket-manager">
+              <i class="fas fa-clipboard-list"></i
+              ><span>Ticket Management</span>
+            </a>
+            <% } %> <% if (user.superAdmin) { %>
+            <hr />
+            <a class="nav-button" href="/user-management">
+              <i class="fas fa-users"></i><span>User Management</span>
+            </a>
+            <a class="nav-button" href="/admin">
+              <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+            </a>
+            <% } %>
+            <hr />
+            <a class="nav-button" href="/settings">
+              <i class="fas fa-gear"></i><span>Settings</span>
+            </a>
+            <a class="nav-button" href="/logout">
+              <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+            </a>
+            <div id="nav-content-highlight"></div>
+          </div>
+          <div id="nav-footer">
+            <div id="nav-footer-heading">
+              <div id="nav-footer-avatar">
+                <img
+                  src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+                />
+              </div>
+              <div id="nav-footer-titlebox">
+                <a id="nav-footer-title" target="_blank"
+                  ><%= user.username %></a
+                >
+                <p id="nav-footer-subtitle"><%= rank %></p>
+              </div>
+            </div>
+            <div id="nav-footer-content">
+              <ul class="dropdown" aria-label="submenu">
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- NAV BAR END-->
+
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">Command Members</h1>
+          <table id="command" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cmdAgent.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-2"></div>
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">Lead QA Agents</h1>
+          <table id="Training Command" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% lqa.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-2"></div>
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">LSA Agents</h1>
+          <table id="Training Command" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% lsa.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-2"></div>
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">Trainers</h1>
+          <table id="trainers" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% trainers.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-2"></div>
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">
+            Senior Support Agents
+          </h1>
+          <table id="senagents" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% senAgents.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-2"></div>
+        <div class="rosterBoarder shadow-md rounded-lg p-4">
+          <h1 class="text-2xl font-bold mb-4 text-black">Support Agents</h1>
+          <table id="aagents" class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">Username</th>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Discord ID</th>
+                <th class="text-left">Join Date</th>
+                <th class="text-left">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% agents.forEach(agent => { %>
+
+              <tr class="rowHover">
+                <td><%= agent.userName %></td>
+                <td><%= agent.rank %></td>
+                <td><%= agent.userID %></td>
+                <td><%= agent.joinDate %></td>
+                <td>
+                  <a href="<%= agent.ticketLink %>"
+                    ><button
+                      class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Send Message
+                    </button></a
+                  >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<style>
+  .bg-purp {
+    color: rgb(255, 255, 255);
+    background-color: rgb(108, 0, 128);
+  }
+  .rosterBoarder {
+    border: 2px solid rgb(70, 70, 70);
+  }
+  .rowHover:hover {
+    background-color: #18283b;
+    color: rgb(0, 0, 0);
+  }
+
+  .underline {
+    text-decoration: underline;
+  }
+</style>

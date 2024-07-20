@@ -1,0 +1,277 @@
+/** @format */
+
+const {
+  EmbedBuilder,
+  SlashCommandBuilder,
+  embedLength,
+} = require("discord.js");
+const agentModel = require("../../modules/addUserSchema");
+const { sendRosterChannel } = require("../../config.json");
+const { lsaOnly } = require("../leadagent/warn");
+
+module.exports = {
+  data: new SlashCommandBuilder().setName("roster").setDescription("roster"),
+  run: async ({ interaction, client }) => {
+    await interaction.reply(
+      "**<a:green:1215923372471615508> This will take about 60 seconds, please wait...**"
+    );
+    // collect all database data
+    const agentIDs = await agentModel.distinct("userID");
+
+    // create rank variables
+    let agentData = [];
+    let agents = [];
+    let senAgents = [];
+    let trainers = [];
+    let qaAgents = [];
+    let lsa = [];
+    let atc = [];
+    let tc = [];
+    let lqa = [];
+    let cmdAgent = [];
+
+    // sort through agent data and push to relative arraydepending on rank.
+
+    agentIDs.forEach(async (id) => {
+      // get the ID discord nickname
+
+      const member = interaction.guild.members.cache.get(id) || "null";
+      const username = member.nickname || "null";
+
+      await agentModel.findOne({ userID: id }).then((data) => {
+        //console.log(username);
+        if (data.notOnTeam == true) return;
+        if (!data) return;
+        if (data.rank == "Agent") {
+          return agents.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Senior Agent") {
+          return senAgents.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Trainer") {
+          return trainers.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Quality Assurance Agent") {
+          return qaAgents.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Lead Support Agent") {
+          return lsa.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Command") {
+          return cmdAgent.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Assistant Training Coordinator") {
+          return atc.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Training Coordinator") {
+          return tc.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else if (data.rank == "Lead Quality Agent") {
+          return lqa.push({
+            userid: `<@${data.userID}>`,
+            username: `${username}`,
+          });
+        } else {
+          return console.log(data.userName + "'s rank is not defined.");
+        }
+      });
+    });
+    setTimeout(async () => {
+      // define the roster embed
+
+      const rosterEmbed = new EmbedBuilder()
+        .setThumbnail(
+          "https://media.discordapp.net/attachments/824666696258158632/995504300010770573/CALIRP_support.png?ex=659a00a0&is=65878ba0&hm=73cde1e1bf29a42604f2af12f2250532b95265dcf3e24a4ea165b9e9643a238d&format=webp&quality=lossless&width=1193&height=671&"
+        )
+        .setColor("DarkBlue")
+        .setTitle("CaliRP | Support Team Roster")
+        .setDescription(
+          "This is the Support Team Roster. Here you'll find your Chain of Command and also the rank every agent is assigned to.\n\n `This roster is automatically updated every 30 minutes.`\nif there is an issue, please open a ticket in <#839216704777093170>."
+        )
+        .setTimestamp()
+        .setFooter({
+          text: `Hosted by https://discord.gg/chromalabs`,
+          iconURL:
+            "https://cdn.discordapp.com/icons/1104661293962625124/a_742e5f60992f9ed76ffa5c85314f61b3.gif?size=600",
+        });
+
+      // Command
+      // add CMD members sorted alphabetically
+      if (cmdAgent.length > 0) {
+        let sortCMD = [];
+        let presortCMD = await cmdAgent.sort();
+        presortCMD.forEach((item) => {
+          sortCMD.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Command Members",
+          value: sortCMD.join(`\n`),
+        });
+      }
+      // TC
+      // add TC members sorted alphabetically
+      if (tc.length > 0) {
+        let sorttc = [];
+        let presorttc = await tc.sort();
+        presorttc.forEach((item) => {
+          sorttc.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Training Coordinator",
+          value: sorttc.join(`\n`),
+        });
+      }
+      // TC
+      // add ATC members sorted alphabetically
+      if (atc.length > 0) {
+        let sortatc = [];
+        let presortatc = await atc.sort();
+        presortatc.forEach((item) => {
+          sortatc.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Assistant Training Coordinator",
+          value: sortatc.join(`\n`),
+        });
+      }
+
+      // LQA
+      // add ATC members sorted alphabetically
+      if (lqa.length > 0) {
+        let sortLQA = [];
+        let presortLQA = await lqa.sort();
+        presortLQA.forEach((item) => {
+          sortLQA.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Lead Quality Agents",
+          value: sortLQA.join(`\n`),
+        });
+      }
+
+      // Lead Agents
+      // add LSA members sorted alphabetically
+      if (lsa.length > 0) {
+        let sortLSA = [];
+        let presortLSA = await lsa.sort();
+        presortLSA.forEach((item) => {
+          sortLSA.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Lead Support Agents",
+          value: sortLSA.join(`\n`),
+        });
+      }
+
+      // QA Agents
+      // add QA members sorted alphabetically
+      if (qaAgents.length > 0) {
+        let sortQA = [];
+        let presortQA = await qaAgents.sort();
+        presortQA.forEach((item) => {
+          sortQA.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Quality Assurance Agents",
+          value: sortQA.join(`\n`),
+        });
+      }
+
+      // Trainer Agents
+      // add Trainers members sorted alphabetically
+      if (trainers.length > 0) {
+        let sortTrain = [];
+        let presortTrain = await trainers.sort();
+        presortTrain.forEach((item) => {
+          sortTrain.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Trainers",
+          value: sortTrain.join(`\n`),
+        });
+      }
+
+      // Senior Agents
+      // add Senior members sorted alphabetically
+      if (senAgents.length > 0) {
+        let sortSSA = [];
+        let presortSSA = await senAgents.sort();
+        presortSSA.forEach((item) => {
+          sortSSA.push(item.userid);
+        });
+        // add to embed
+        rosterEmbed.addFields({
+          name: "Senior Support Agents",
+          value: sortSSA.join(`\n`),
+        });
+      }
+
+      // Support Agents
+      // add Support members sorted alphabetically
+      if (agents.length > 0) {
+        let sortSA = [];
+        let presortSA = await agents.sort();
+        presortSA.forEach((item) => {
+          sortSA.push(item.userid);
+        });
+        // add to embed
+        for (let i = 0; i < Math.ceil(sortSA.length / 40); i++) {
+          const slice = await sortSA.slice(i * 40, (i + 1) * 40);
+          rosterEmbed.addFields({
+            name: "Support Agents",
+            value: slice.join(`\n`),
+          });
+        }
+      }
+      // try {
+      //   //await leaderChannel?.send({ embeds: [embed] });
+      //   const msg = await leaderChannel.messages
+      //     .fetch({ limit: 1 })
+      //     .then((msg) => msg.first());
+      //   if (!msg || !msg.embeds[0]) {
+      //     leaderChannel.send({ embeds: [embed, embed2] });
+      //   } else {
+      //     msg.edit({ embeds: [embed, embed2] });
+      //   }
+      // } catch {}
+
+      setTimeout(async () => {
+        console.log(embedLength(rosterEmbed));
+        const rosterChannel = client.channels.cache.get(sendRosterChannel);
+        const msg = await rosterChannel.messages
+          .fetch({ limit: 1 })
+          .then((msg) => msg.first());
+        if (!msg || !msg.embeds[0]) {
+          rosterChannel.send({ embeds: [rosterEmbed] });
+        } else {
+          msg.edit({ embeds: [rosterEmbed] });
+        }
+        await interaction.editReply({ content: "Done" });
+      }, 2000);
+    }, 60000);
+  },
+  cmdOnly: true,
+};

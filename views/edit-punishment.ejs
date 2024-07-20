@@ -1,0 +1,305 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <link href="/css/navmenu.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Manage Punishment</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+  </head>
+  <body class="page">
+    <div class="flex">
+      <!-- NAV BAR START-->
+      <div id="nav-bar">
+        <div id="nav-header">
+          <a id="nav-title" href="/"
+            ><img
+              class="supportIcon"
+              src="./images/CALIRP_support.png"
+              alt="SupportLogo"
+            /><i class="title"> Support Team</i></a
+          >
+          <hr />
+        </div>
+        <div id="nav-content">
+          <a class="nav-button" href="/">
+            <i class="fas fa-desktop"></i><span>My Dashboard</span>
+          </a>
+          <a class="nav-button" href="/my-tickets">
+            <i class="fas fa-ticket"></i><span>My Tickets</span>
+          </a>
+          <a class="nav-button" href="/new-ticket">
+            <i class="fas fa-receipt"></i><span>Log a Ticket</span>
+          </a>
+          <a class="nav-button" href="/roster">
+            <i class="fas fa-address-book"></i><span>Roster</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
+          >
+            <i class="fas fa-book"></i><span>Knowledgebase</span>
+          </a>
+          <% if (user.isStaff) { %>
+          <hr />
+          <a class="nav-button" href="/lsa-dashboard">
+            <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
+          </a>
+          <a class="nav-button" href="/punishments">
+            <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
+          </a>
+          <a class="nav-button" href="/ticket-manager">
+            <i class="fas fa-clipboard-list"></i><span>Ticket Management</span>
+          </a>
+          <% } %> <% if (user.superAdmin) { %>
+          <hr />
+          <a class="nav-button" href="/user-management">
+            <i class="fas fa-users"></i><span>User Management</span>
+          </a>
+          <a class="nav-button" href="/admin">
+            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+          </a>
+          <% } %>
+          <hr />
+          <a class="nav-button" href="/settings">
+            <i class="fas fa-gear"></i><span>Settings</span>
+          </a>
+          <a class="nav-button" href="/logout">
+            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+          </a>
+          <div id="nav-content-highlight"></div>
+        </div>
+        <div id="nav-footer">
+          <div id="nav-footer-heading">
+            <div id="nav-footer-avatar">
+              <img
+                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+              />
+            </div>
+            <div id="nav-footer-titlebox">
+              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
+              <p id="nav-footer-subtitle"><%= rank %></p>
+            </div>
+          </div>
+          <div id="nav-footer-content">
+            <ul class="dropdown" aria-label="submenu">
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- NAV BAR END-->
+      <main class="flex-1 p-4">
+        <div class="p-4"></div>
+        <div class="logForm">
+          <div class="container mx-auto p-6 rounded-lg text-white">
+            <h1 class="text-3xl font-semibold mb-4">
+              Edit the punishment log | Case ID: <%= punishment.caseID %>
+            </h1>
+            <p class="mb-6">
+              Details regarding this punishment can be changed below. Changes
+              are final and cannot be restored.
+            </p>
+            <% if (user.superAdmin) { %>
+            <a href="/delete-punish/<%= punishment.caseID %>"
+              ><button
+                onclick="deletePunish(event)"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Delete Punishment
+              </button></a
+            >
+            <% } %>
+
+            <form
+              action="/update-punishment/<%= punishment.caseID %>"
+              method="POST"
+              class="p-6 rounded-lg shadow-md"
+            >
+              <div class="mb-4">
+                <label
+                  for="userId"
+                  class="block bg-inherit text-sm font-medium text-gray-700"
+                  >User ID</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="userId"
+                  name="userId"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.userID %>"
+                  disabled
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="username"
+                  class="block text-sm font-medium text-gray-700"
+                  >Username</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="username"
+                  name="username"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.username %>"
+                  disabled
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="caseid"
+                  class="block text-sm font-medium text-gray-700"
+                  >Case ID</label
+                >
+                <input
+                  type="text"
+                  id="caseid"
+                  name="caseid"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value=" <%= punishment.caseID %> "
+                  disabled
+                />
+                <br /><br />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="type"
+                  class="block text-sm font-medium text-gray-700"
+                  >Type</label
+                >
+                <input
+                  type="text"
+                  id="type"
+                  name="type"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.type %>"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-4">
+                <label
+                  for="offence"
+                  class="block text-sm font-medium text-gray-700"
+                  >Offence</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="offence"
+                  name="offence"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.offence %>"
+                />
+              </div>
+
+              <div class="mb-4">
+                <label
+                  for="date"
+                  class="block text-sm font-medium text-gray-700"
+                  >Date</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="date"
+                  name="date"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.date %>"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-4">
+                <label
+                  for="description"
+                  class="block text-sm font-medium text-gray-700"
+                  >Description</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="description"
+                  name="description"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.description %>"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="lsaId"
+                  class="block text-sm font-medium text-gray-700"
+                  >Lead Agent Discord ID</label
+                >
+                <input
+                  type="number"
+                  required
+                  id="lsaId"
+                  name="lsaId"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= punishment.lsaAgent %>"
+                  disabled
+                />
+              </div>
+
+              <div class="flex justify-end">
+                <button
+                  type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Save
+                </button>
+                <div class="p-4"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  function deletePunish(event) {
+    if (
+      !confirm(
+        "Are you sure? Deleting this punishment is non reversable.\n\nClick OK to continue."
+      )
+    ) {
+      event.preventDefault();
+    }
+  }
+</script>
+
+<style>
+  input {
+    color: white;
+    background-color: var(--background);
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+  .logForm {
+    transform: scale(1.1);
+  }
+  .page {
+    height: auto;
+    width: auto;
+  }
+  .bg-purp {
+    color: rgb(255, 255, 255);
+    background-color: rgb(108, 0, 128);
+  }
+</style>

@@ -1,0 +1,123 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DNRP | Vehicle Garage</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+  </head>
+  <body class="page">
+    <header>
+      <div class="title"></div>
+    </header>
+    <div class="loginContainer">
+      <div class="flex items-center justify-center mt-1">
+        <div id="messageBoxWithButton" class="bg-white p-8 rounded-lg shadow-md w-32 pt-40">
+          <h1 class="text-2xl font-bold mb-4">Welcome to the DNRP | Garage</h1>
+          <a
+            href="/auth/discord"
+            class="bg-blue-500 text-white py-2 px-4 rounded flex items-center justify-center"
+          >
+            <img
+              src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ac3c481f273141736_icon_clyde_black_RGB.png"
+              class="w-8 h-6 mr-2"
+              alt="Discord Icon"
+            />
+            Login with Discord
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  Notification.requestPermission().then((result) => {
+    console.log(result);
+  });
+</script>
+
+<style>
+  
+  .loginContainer {
+    padding-top: 20em;
+    
+  }
+
+  .image {
+    height: 25%;
+    position: relative;
+    margin: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 20%;
+    left: 50%;
+    margin-right: -50%;
+  }
+
+  /* styles.css */
+  .footer {
+    width: 100%;
+    position: fixed;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .footer .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .footer .footer-section {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .footer h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .footer p,
+  .footer ul,
+  .footer li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer ul {
+    margin-top: 10px;
+  }
+
+  .footer a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-copy {
+    margin-top: 20px;
+    font-size: 0.9em;
+  }
+  .bg-purp {
+    color: rgb(255, 255, 255);
+    background-color: rgb(108, 0, 128);
+  }
+</style>

@@ -1,0 +1,251 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/navmenu.css" rel="stylesheet" />
+    <link href="/css/settings.css" rel="stylesheet" />
+    <title>Settings</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="page">
+    <div class="flex">
+      <!-- NAV BAR START-->
+      <div id="nav-bar">
+        <div id="nav-header">
+          <a id="nav-title" href="/"
+            ><img
+              class="supportIcon"
+              src="./images/CALIRP_support.png"
+              alt="SupportLogo"
+            /><i class="title"> Support Team</i></a
+          >
+          <hr />
+        </div>
+        <div id="nav-content">
+          <a class="nav-button" href="/">
+            <i class="fas fa-desktop"></i><span>My Dashboard</span>
+          </a>
+          <a class="nav-button" href="/my-tickets">
+            <i class="fas fa-ticket"></i><span>My Tickets</span>
+          </a>
+          <a class="nav-button" href="/new-ticket">
+            <i class="fas fa-receipt"></i><span>Log a Ticket</span>
+          </a>
+          <a class="nav-button" href="/roster">
+            <i class="fas fa-address-book"></i><span>Roster</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
+          >
+            <i class="fas fa-book"></i><span>Knowledgebase</span>
+          </a>
+          <% if (user.isStaff) { %>
+          <hr />
+          <a class="nav-button" href="/lsa-dashboard">
+            <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
+          </a>
+          <a class="nav-button" href="/punishments">
+            <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
+          </a>
+          <a class="nav-button" href="/ticket-manager">
+            <i class="fas fa-clipboard-list"></i><span>Ticket Management</span>
+          </a>
+          <% } %> <% if (user.superAdmin) { %>
+          <hr />
+          <a class="nav-button" href="/user-management">
+            <i class="fas fa-users"></i><span>User Management</span>
+          </a>
+          <a class="nav-button" href="/admin">
+            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+          </a>
+          <% } %>
+          <hr />
+          <a class="nav-button" href="/settings">
+            <i class="fas fa-gear"></i><span>Settings</span>
+          </a>
+          <a class="nav-button" href="/logout">
+            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+          </a>
+          <div id="nav-content-highlight"></div>
+        </div>
+        <div id="nav-footer">
+          <div id="nav-footer-heading">
+            <div id="nav-footer-avatar">
+              <img
+                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+              />
+            </div>
+            <div id="nav-footer-titlebox">
+              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
+              <p id="nav-footer-subtitle"><%= rank %></p>
+            </div>
+          </div>
+          <div id="nav-footer-content">
+            <ul class="dropdown" aria-label="submenu">
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- NAV BAR END-->
+      <main class="flex-1 p-4">
+        <div class="p-4"></div>
+        <div class="flex justify-center">
+          <h1 class="mb-6 text-3xl text-white font-bold underline">
+            My Settings
+          </h1>
+        </div>
+        <div class="flex justify-center">
+          <div id="settingsDisplay">
+            <div class="container">
+              <h1 id="panelTitle">Account Information</h1>
+              <form
+                action="/update-settings"
+                method="post"
+                class="p-6 rounded-lg shadow-md"
+              >
+                <label for="userId">Discord ID</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm inputDisabled"
+                  type="number"
+                  name="userId"
+                  id="userId"
+                  value="<%= user.discordId %>"
+                  disabled
+                />
+                <br />
+                <label for="username">Username</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  type="text"
+                  name="userId"
+                  id="userId"
+                  value="<%= user.username %>"
+                />
+                <br />
+                <label for="accountSecret">Account Secret</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm inputDisabled"
+                  type="password"
+                  name="accountSecret"
+                  id="accountSecret"
+                  value="<%= user.discordId %> <button></button>"
+                  disabled
+                />
+                <br>
+                <label for="showAccSecret">Show Account Secret</label>
+                <input type="checkbox" id="showAccSecret" onclick="showSecret()" />
+                <br>
+                <div id="FormButtons">
+                  <button
+                    type="submit"
+                    class="submitBut"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Save
+                  </button>
+                  <br />
+                  <button
+                    type="reset"
+                    class="resetBut"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- BREAK -->
+          </div>
+          <!-- BREAK -->
+          <div id="settingsDisplay">
+            <div class="container">
+              <form
+                action="/update-settings"
+                method="post"
+                class="p-6 rounded-lg shadow-md"
+              >
+                <label for="userId">Discord ID</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  type="number"
+                  name="userId"
+                  id="userId"
+                  value="<%= user.discordId %>"
+                  disabled
+                />
+                <br />
+                <label for="userId">Username</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  type="text"
+                  name="userId"
+                  id="userId"
+                  value="<%= user.username %>"
+                />
+                <br />
+                <label for="userId">Discord ID</label>
+                <input
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  type="number"
+                  name="userId"
+                  id="userId"
+                  value="<%= user.discordId %>"
+                  disabled
+                />
+                <div id="FormButtons">
+                  <button
+                    type="submit"
+                    class="submitBut"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Save
+                  </button>
+                  <br />
+                  <button
+                    type="reset"
+                    class="resetBut"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- BREAK -->
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  function showSecret() {
+  var x = document.getElementById("accountSecret");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<style>
+  .bg-purp {
+    color: rgb(255, 255, 255);
+    background-color: rgb(108, 0, 128);
+  }
+  input {
+    background-color: inherit;
+  }
+</style>

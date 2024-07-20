@@ -1,0 +1,181 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Garage</title>
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/navmenu.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="page text-white">
+    <div class="flex">
+      <!-- NAV BAR START-->
+      <div id="nav-bar">
+        <div id="nav-header">
+          <a id="nav-title" href="/"
+            ><img
+              id="img"
+              class="dnrpIcon"
+              src="/images/daynnightlogo.png"
+              alt="SupportLogo"
+            /><i class="title"> DNRP | Vehicles</i></a
+          >
+          <hr />
+        </div>
+        <div id="nav-content">
+          <a class="nav-button" href="/">
+            <i class="fas fa-house"></i><span>Home</span>
+          </a>
+          <a class="nav-button" href="/my-garage">
+            <i class="fas fa-car"></i><span>My Garage</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://store.dnrp.gg/checkout/packages/add/6353284/single"
+          >
+            <i class="fas fa-shop"></i><span>Buy a Civ Slot</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://store.dnrp.gg/checkout/packages/add/6353297/single"
+          >
+            <i class="fas fa-shop"></i><span>Buy a LEO Slot</span>
+          </a>
+          <% if (user.isStaff) { %>
+          <hr />
+          <a class="nav-button" href="/workshop">
+            <i class="fas fa-warehouse"></i><span>The Workshop</span>
+          </a>
+          <a class="nav-button" href="/spawncodes">
+            <i class="fas fa-truck-ramp-box"></i><span>Spawncodes</span>
+          </a>
+          <a class="nav-button" href="/slot-manager">
+            <i class="fas fa-clipboard-list"></i><span>Slot Management</span>
+          </a>
+          <% } %> <% if (user.superAdmin) { %>
+          <hr />
+          <a class="nav-button" href="/user-management">
+            <i class="fas fa-users"></i><span>User Management</span>
+          </a>
+          <a class="nav-button" href="/admin">
+            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+          </a>
+          <% } %>
+          <hr />
+          <a class="nav-button" href="/settings">
+            <i class="fas fa-gear"></i><span>Settings</span>
+          </a>
+          <a class="nav-button" href="/logout">
+            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+          </a>
+          <div id="nav-content-highlight"></div>
+        </div>
+        <div id="nav-footer">
+          <div id="nav-footer-heading">
+            <div id="nav-footer-avatar">
+              <img
+                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+              />
+            </div>
+            <div id="nav-footer-titlebox">
+              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
+              <p id="nav-footer-subtitle">ID: <%= user.discordId %></p>
+            </div>
+          </div>
+          <div id="nav-footer-content">
+            <ul class="dropdown" aria-label="submenu">
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- NAV BAR END-->
+      <main class="flex-1 p-4">
+        <div id="title" class="flex justify-center doubleCont">
+          <img
+            class="textLogo"
+            src="/images/daynnightlogo.png"
+            alt="SupportLogo"
+          />
+          <h1 class="p-8 mb-6 text-3xl text-white font-bold underline">
+            My Garage
+          </h1>
+          <img
+            class="textLogo"
+            src="/images/daynnightlogo.png"
+            alt="SupportLogo"
+          />
+        </div>
+        <div class="p-4"></div>
+        <div class="flex justify-center">
+          <% for (let i = 0; i <= 2; i++) { %> <% if (data[i]) {%>
+          <div class="vehicleCard">
+            <img
+              src="/images/carPlaceholder.png"
+              alt="Denim Jeans"
+              style="width: 100%"
+            />
+            <hr />
+            <p class="p-2"></p>
+            <h1>LEO VEHICLE</h1>
+            <p class="spawncode"><%= data[i].spawn_code %></p>
+            <p>
+              Public Vehicle: <%= data[i].public %> <br />
+              Locked: <%= data[i].locked %>
+            </p>
+            <p class="p-2"></p>
+            <p><button>Manage Vehicle</button></p>
+          </div>
+          <%}}%>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .vehicleCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    border: white double 4px;
+    /*black background with 30% opacity*/
+    background-color: rgba(59, 59, 59, 0.8);
+  }
+
+  .spawncode {
+    color: grey;
+    font-size: 22px;
+  }
+  .vehicleCard h1 {
+    color: white;
+    font-weight: bold;
+  }
+
+  .vehicleCard button {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .vehicleCard button:hover {
+    background-color: #222;
+  }
+</style>

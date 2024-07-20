@@ -1,0 +1,245 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Punishments</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/navmenu.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="icon" href="/images/daynnightlogo.png" type="image/x-icon" />
+  </head>
+  <body class="page text-white">
+    <div class="flex">
+      <!-- NAV BAR START-->
+      <div id="nav-bar">
+        <div id="nav-header">
+          <a id="nav-title" href="/"
+            ><img
+              class="supportIcon"
+              src="./images/CALIRP_support.png"
+              alt="SupportLogo"
+            /><i class="title"> Support Team</i></a
+          >
+          <hr />
+        </div>
+        <div id="nav-content">
+          <a class="nav-button" href="/">
+            <i class="fas fa-desktop"></i><span>My Dashboard</span>
+          </a>
+          <a class="nav-button" href="/my-tickets">
+            <i class="fas fa-ticket"></i><span>My Tickets</span>
+          </a>
+          <a class="nav-button" href="/new-ticket">
+            <i class="fas fa-receipt"></i><span>Log a Ticket</span>
+          </a>
+          <a class="nav-button" href="/roster">
+            <i class="fas fa-address-book"></i><span>Roster</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
+          >
+            <i class="fas fa-book"></i><span>Knowledgebase</span>
+          </a>
+          <% if (user.isStaff) { %>
+          <hr />
+          <a class="nav-button" href="/lsa-dashboard">
+            <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
+          </a>
+          <a class="nav-button" href="/punishments">
+            <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
+          </a>
+          <a class="nav-button" href="/ticket-manager">
+            <i class="fas fa-clipboard-list"></i><span>Ticket Management</span>
+          </a>
+          <% } %> <% if (user.superAdmin) { %>
+          <hr />
+          <a class="nav-button" href="/user-management">
+            <i class="fas fa-users"></i><span>User Management</span>
+          </a>
+          <a class="nav-button" href="/admin">
+            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+          </a>
+          <% } %>
+          <hr />
+          <a class="nav-button" href="/settings">
+            <i class="fas fa-gear"></i><span>Settings</span>
+          </a>
+          <a class="nav-button" href="/logout">
+            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+          </a>
+          <div id="nav-content-highlight"></div>
+        </div>
+        <div id="nav-footer">
+          <div id="nav-footer-heading">
+            <div id="nav-footer-avatar">
+              <img
+                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+              />
+            </div>
+            <div id="nav-footer-titlebox">
+              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
+              <p id="nav-footer-subtitle"><%= rank %></p>
+            </div>
+          </div>
+          <div id="nav-footer-content">
+            <ul class="dropdown" aria-label="submenu">
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- NAV BAR END-->
+      <main class="flex-1 p-4 max-w-fit">
+        <h1 class="text-2xl font-bold mb-4">Support Team Punishments</h1>
+        <div class="shadow-md rounded-lg p-4">
+          <input
+            class="border-black"
+            type="text"
+            id="seacrhInput"
+            onkeyup="myFunction()"
+            placeholder="Search Discord ID"
+          />
+          <table id="myTable">
+            <tr>
+              <th>Case #</th>
+              <th>Agent ID</th>
+              <th>Username</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Offence</th>
+              <th>Days</th>
+              <th>Lead Agent</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+            <% punishments.forEach(punishment => { %>
+
+            <tr>
+              <td><%= punishment.caseID %></td>
+              <td><%= punishment.userID %></td>
+              <td><%= punishment.username %></td>
+              <td><%= punishment.description %></td>
+              <td><%= punishment.type %></td>
+              <td><%= punishment.offence %></td>
+              <td><%= punishment.days %></td>
+              <td><%= punishment.lsaAgent %></td>
+              <td><%= punishment.date %></td>
+              <td>
+                <a href="/punishments/<%= punishment._id %>"
+                  ><button
+                    class="bg-blue-600 hover:bg-blue-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Manage
+                  </button></a
+                >
+                <div class="p-2"></div>
+                <% if (user.superAdmin) { %>
+                <a href="/delete-punish/<%= punishment.caseID %>"
+                  ><button
+                    onclick="sendPopUp(event)"
+                    class="bg-red-600 hover:bg-red-700 text-white font p-2 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Delete
+                  </button></a
+                ><% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  function sendPopUp(event) {
+    console.log(event);
+    if (
+      !confirm(
+        "Are you sure? Deleting this punishment is non reversable.\n\nClick OK to continue."
+      )
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  function myFunction() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("seacrhInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    console.log(table);
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+    border: 1px solid #ddd;
+  }
+
+  tr,
+  td,
+  th {
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+    margin: 20px;
+    max-width: 30rem;
+  }
+
+  tr:nth-child(even) {
+    background-color: #162230;
+  }
+
+  tr:hover {
+    background-color: #494d50;
+  }
+
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #8d8d8d;
+    color: rgb(0, 0, 0);
+  }
+
+  input {
+    border: solid 1px white;
+    color: white;
+    background-color: var(--background);
+    width: 40%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+</style>

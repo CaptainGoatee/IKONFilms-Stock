@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "http-errors": "^2.0.0",
+    "mongoose": "^8.4.0",
+    "mysql2": "^3.10.2",
+    "nodemon": "^3.1.0",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "build:css": "tailwindcss -i ./public/css/styles.css -o ./public/css/tailwind.css --minify"
+  },
+  "name": "dnrp-trust-portal",
+  "version": "0.5.0",
+  "main": "app.js",
+  "author": "_javachip_",
+  "license": "ISC",
+  "description": "A vehicle Garage for DNRP",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  },
+  "keywords": [
+    "Vehicle"
+  ]
+}
