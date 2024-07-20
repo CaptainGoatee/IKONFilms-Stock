@@ -83,62 +83,6 @@ app.get(
   }
 );
 
-app.post("/signup", async function (req, res, next) {
-  const payroll = await User.findOne({ payroll: req.body.username });
-  const email = await User.findOne({ payroll: req.body.email });
-  if (payroll) {
-    // throw error
-    return res.render("signup", { error: "Error: Payroll already taken." });
-  }
-  if (email) {
-    // throw error
-    return res.render("signup", {
-      error: "Error: Email address already in use.",
-    });
-  }
-
-  try {
-    var salt = crypto.randomBytes(16);
-    crypto.pbkdf2(
-      req.body.password,
-      salt,
-      310000,
-      32,
-      "sha256",
-      async function (err, hashedPassword) {
-        if (err) {
-          console.log(err);
-        }
-        User.create({
-          payroll: req.body.username,
-          email: req.body.email,
-          displayName: req.body.name,
-          salt: salt,
-          hashed_password: hashedPassword,
-        }).then((member, err) => {
-          if (err) {
-            console.log(err);
-          }
-          var user = {
-            id: member._id,
-            username: req.body.username,
-          };
-          req.login(user, function (err) {
-            if (err) {
-              console.log(err);
-            }
-            res.render("login", {
-              error:
-                "Account Created. Please contact a Management Staff Member to verify your account.",
-            });
-          });
-        });
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-});
 app.post("/login/password", async function (req, res, next) {
   try {
     const userData = await User.findOne({ payroll: req.body.username });
@@ -230,7 +174,7 @@ app.get("/dashboard", async (req, res) => {
       }
     });
     return res.render("login", {
-      error: "Account not verified by management.",
+      error: "Account not verified by iKON Studios.",
     });
   }
   const jobModel = await mongoose.model(`${formattedDate}`, jobSchema);
