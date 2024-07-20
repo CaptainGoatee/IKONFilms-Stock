@@ -1,0 +1,95 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="icon" href="/images/favicon.webp" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <script
+    src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+    defer
+  ></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "9aad3e00-b01f-4dce-a398-69a1b3bc0188",
+        safari_web_id:
+          "web.onesignal.auto.1ee85315-99d2-4859-abe2-d0d2d86b4cd7",
+        notifyButton: {
+          enable: true,
+        },
+      });
+    });
+  </script>
+  <body class="page">
+    <div class="topnav" id="myTopnav">
+      <a href="/dashboard" class="active">Dashboard</a>
+      <a href="/manage-jobs">Manage Jobs</a>
+      <a href="/users">Manage Users</a>
+      <a href="/tyres">Tyres</a>
+      <a href="/settings">Settings</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/progress-board">Job Dashboard</a>
+      <% }%>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    <div class="flex">
+      <main class="flex-1 p-4">
+        <div class="flex justify-center">
+          <h1 class="text-2xl font-bold mb-4">My Worksheet</h1>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-4">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="text-left">#</th>
+                <th class="text-left">Type</th>
+                <th class="text-left">Job</th>
+                <th class="text-left">Time</th>
+                <th class="text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% jobCards.forEach(job => { %>
+              <tr class="rowHover">
+                <td><%= job.vrm %></td>
+                <td><%= job.description %></td>
+                <td><%= job.status %></td>
+                <td><%= job.slotTime %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+</script>

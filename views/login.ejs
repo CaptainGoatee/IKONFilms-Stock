@@ -1,0 +1,175 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <link href="/css/tailwind.css" rel="stylesheet" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workshop</title>
+    <link rel="icon" href="/images/favicon.webp" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+  </head>
+  <body class="page">
+    <header>
+      <div class="title"></div>
+    </header>
+
+    <div class="loginContainer">
+      <div class="flex items-center justify-center mt-1">
+        <div
+          id="container"
+          class="bg-white p-8 rounded-lg shadow-md w-32 pt-40"
+        >
+          <h1 class="text-2xl font-bold mb-4">Welcome to Halfords - HA356.</h1>
+          <div id="loginPanel flex items-center justify-center">
+            <h2>
+              We utilise this portal to keep on top of workflow and help utilise
+              our workshop.
+            </h2>
+            <% if (!error) { %>
+            <h1 class="text-red loginErrorMessage">
+              System: Please login to continue.
+            </h1>
+            <% } %> <% if (error) { %>
+            <h1 class="text-red loginErrorMessage">System: <%= error %></h1>
+            <% } %>
+
+            <div class="flex justify-center items-center">
+              <form action="/login/password" method="post">
+                <!-- user input-->
+                Username:<br />
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  required
+                /><br /><br />
+                Password:<br />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                /><br /><br />
+                <!-- submit button -->
+                <button class="orangeButton" type="submit">Sign in</button>
+                <div class="p-2"></div>
+                <h1>
+                  Not got an account?
+                  <a class="underline" href="/create_account">Create one!</a>
+                </h1>
+              </form>
+            </div>
+
+            <div class="p-4"></div>
+            <div id="" class="flex justify-center items-center">
+              <a href="/login/google">
+                <button type="button" class="login-with-google-btn">
+                  Continue with Google
+                </button>
+              </a>
+              <div class="p-4"></div>
+              <a href="/auth/discord">
+                <button
+                  class="login-with-discord-btn flex items-center justify-center"
+                >
+                  <img
+                    src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ac3c481f273141736_icon_clyde_black_RGB.png"
+                    class="w-8 h-6 mr-2"
+                    alt="Discord Icon"
+                  />
+                  Login with Discord
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<style>
+  #disabled {
+    cursor: not-allowed;
+  }
+  .login-with-google-btn {
+    transition: background-color 0.3s, box-shadow 0.3s;
+
+    padding: 12px 16px 12px 42px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+    background-color: rgb(76, 76, 76);
+    background-repeat: no-repeat;
+    background-position: 12px 11px;
+  }
+  .login-with-google-btn:hover {
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .login-with-google-btn:active {
+    background-color: #eeeeee;
+  }
+
+  .login-with-google-btn:focus {
+    outline: none;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+      0 0 0 3px #c8dafc;
+  }
+
+  .login-with-google-btn:disabled {
+    filter: grayscale(100%);
+    background-color: #ebebeb;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+  }
+  .login-with-discord-btn {
+    transition: background-color 0.3s, box-shadow 0.3s;
+
+    padding: 12px 16px 12px 16px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+    background-color: rgb(76, 76, 76);
+    background-repeat: no-repeat;
+    background-position: 12px 11px;
+  }
+  .login-with-discord-btn:hover {
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .login-with-discord-btn:active {
+    background-color: #eeeeee;
+  }
+
+  .login-with-discord-btn:focus {
+    outline: none;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+      0 0 0 3px #c8dafc;
+  }
+
+  .login-with-discord-btn:disabled {
+    filter: grayscale(100%);
+    background-color: #ebebeb;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+  }
+</style>
