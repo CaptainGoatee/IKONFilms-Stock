@@ -1,0 +1,316 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/tailwind.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/popup_notif.css" rel="stylesheet" />
+    <script src="/js/notification.js"></script>
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link href="/css/navmenu.css" rel="stylesheet" />
+
+    <title>Manage Ticket</title>
+    <link rel="icon" href="/images/CALIRP_support.png" type="image/x-icon" />
+  </head>
+  <body class="page">
+    <div class="flex">
+      <!-- NAV BAR START-->
+      <div id="nav-bar">
+        <div id="nav-header">
+          <a id="nav-title" href="/"
+            ><img
+              class="supportIcon"
+              src="/images/CALIRP_support.png"
+              alt="SupportLogo"
+            /><i class="title"> Support Team</i></a
+          >
+          <hr />
+        </div>
+        <div id="nav-content">
+          <a class="nav-button" href="/">
+            <i class="fas fa-desktop"></i><span>My Dashboard</span>
+          </a>
+          <a class="nav-button" href="/my-tickets">
+            <i class="fas fa-ticket"></i><span>My Tickets</span>
+          </a>
+          <a class="nav-button" href="/new-ticket">
+            <i class="fas fa-receipt"></i><span>Log a Ticket</span>
+          </a>
+          <a class="nav-button" href="/roster">
+            <i class="fas fa-address-book"></i><span>Roster</span>
+          </a>
+          <a
+            class="nav-button"
+            href="https://calirp-or-support-team.gitbook.io/knowledgebase/"
+          >
+            <i class="fas fa-book"></i><span>Knowledgebase</span>
+          </a>
+          <% if (user.isStaff) { %>
+          <hr />
+          <a class="nav-button" href="/lsa-dashboard">
+            <i class="fas fa-laptop"></i><span>LSA Dashboard</span>
+          </a>
+          <a class="nav-button" href="/punishments">
+            <i class="fas fa-circle-exclamation"></i><span>Punishments</span>
+          </a>
+          <a class="nav-button" href="/ticket-manager">
+            <i class="fas fa-clipboard-list"></i><span>Ticket Management</span>
+          </a>
+          <% } %> <% if (user.superAdmin) { %>
+          <hr />
+          <a class="nav-button" href="/user-management">
+            <i class="fas fa-users"></i><span>User Management</span>
+          </a>
+          <a class="nav-button" href="/admin">
+            <i class="fas fa-user-shield"></i><span>Admin Menu</span>
+          </a>
+          <% } %>
+          <hr />
+          <a class="nav-button" href="/settings">
+            <i class="fas fa-gear"></i><span>Settings</span>
+          </a>
+          <a class="nav-button" href="/logout">
+            <i class="fas fa-right-to-bracket"></i><span>Logout</span>
+          </a>
+          <div id="nav-content-highlight"></div>
+        </div>
+        <div id="nav-footer">
+          <div id="nav-footer-heading">
+            <div id="nav-footer-avatar">
+              <img
+                src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png` : 'default-avatar.png' %>"
+              />
+            </div>
+            <div id="nav-footer-titlebox">
+              <a id="nav-footer-title" target="_blank"><%= user.username %></a>
+              <p id="nav-footer-subtitle"><%= rank %></p>
+            </div>
+          </div>
+          <div id="nav-footer-content">
+            <ul class="dropdown" aria-label="submenu">
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- NAV BAR END-->
+      <main class="flex-1 p-4">
+        <div class="p-4"></div>
+        <div class="logForm">
+          <div class="container mx-auto p-6 rounded-lg text-white">
+            <h1 class="text-3xl font-semibold mb-4">
+              Edit the Ticket log | Ticket ID: <%= ticket._id %>
+            </h1>
+            <p class="mb-6">
+              Details regarding this ticket can be changed below. Changes are
+              final and cannot be restored.
+            </p>
+            <% if (user.superAdmin) { %>
+
+            <a href="/delete-ticket/<%= ticket._id %>"
+              ><button
+                onclick="showPopUp(successMsg)"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Delete Ticket
+              </button></a
+            >
+            <% } %>
+
+            <form
+              action="/update-ticket/<%= ticket._id %>"
+              method="POST"
+              class="p-6 rounded-lg shadow-md"
+            >
+              <div class="mb-4">
+                <label
+                  for="userId"
+                  class="block bg-inherit text-sm font-medium text-gray-700"
+                  >Agent ID (Discord ID)</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="userId"
+                  name="userId"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.agent %>"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="memberAssist"
+                  class="block text-sm font-medium text-gray-700"
+                  >Member Assisted (Discord ID)</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="memberAssist"
+                  name="memberAssist"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.memberAssisted %>"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="ticketID"
+                  class="block text-sm font-medium text-gray-700"
+                  >Ticket ID</label
+                >
+                <input
+                  type="text"
+                  id="ticketID"
+                  name="ticketID"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value=" <%= ticket._id %> "
+                  disabled
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="reason"
+                  class="block text-sm font-medium text-gray-700"
+                  >Reason</label
+                >
+                <input
+                  type="text"
+                  id="reason"
+                  name="reason"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.ticketReason %>"
+                />
+              </div>
+
+              <div class="mb-4">
+                <label
+                  for="date"
+                  class="block text-sm font-medium text-gray-700"
+                  >Date</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="date"
+                  name="date"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.date %>"
+                  disabled
+                />
+              </div>
+
+              <div class="mb-4">
+                <label
+                  for="interactionID"
+                  class="block text-sm font-medium text-gray-700"
+                  >Interaction ID</label
+                >
+                <input
+                  type="text"
+                  required
+                  id="interactionID"
+                  name="inter¦actionID"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.interactionID %>"
+                  disabled
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="link"
+                  class="block text-sm font-medium text-gray-700"
+                  >Ticket Link</label
+                >
+                <input
+                  type="url"
+                  required
+                  id="link"
+                  name="link"
+                  class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value="<%= ticket.ticketLink %>"
+                  disabled
+                />
+              </div>
+
+              <div class="flex justify-end">
+                <button
+                  type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Save
+                </button>
+                <div class="p-4"></div>
+              </div>
+              <div id="popupBox"></div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  let popupBox = document.getElementById("popupBox");
+  let successMsg = '<i class="fa-solid fa-circle-check"></i> Ticket deleted';
+  let errorMsg =
+    '<i class="fa-solid fa-circle-xmark"></i> Error: Ticket Not Deleted';
+  let invalidMsg =
+    '<i class="fa-solid fa-triangle-exclamation"></i> Ticket Not Found';
+
+  function showPopUp(msg) {
+    let popUp = document.createElement("div");
+    popUp.classList.add("popUp");
+    popUp.innerHTML = msg;
+    popupBox.appendChild(popUp);
+    if (msg.includes("Error")) {
+      popUp.classList.add("error");
+    }
+    if (msg.includes("Not Found")) {
+      popUp.classList.add("invalid");
+    }
+
+    setTimeout(() => {
+      popUp.remove();
+    }, 5200);
+    setTimeout(() => {
+      popUp.classList.add("exit");
+    }, 5000);
+  }
+</script>
+<script>
+  async function deleteTicket(event) {
+    let confirmed = await confirm(
+      "Are you sure? Deleting this ticket is non reversable.\n\nClick OK to continue."
+    );
+    if (!confirmed) {
+      event.preventDefault();
+      showPopUp(errorMsg);
+    } else if (confirmed) {
+      showPopUp(successMsg);
+    } else {
+      showPopUp(errorMsg);
+    }
+  }
+  if (!user.superAdmin) {
+    document.getElementById("userId").setAttribute("disabled", "");
+  }
+</script>
+
+<style>
+  input {
+    color: white;
+    background-color: var(--background);
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+</style>
