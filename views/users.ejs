@@ -49,14 +49,22 @@
             <tr>
               <th>logon_id</th>
               <th>Name</th>
+              <th>Discord ID</th>
+              <th>Google ID</th>
+              <th>Access Level</th>
+              <th>Phone Number</th>
               <th></th>
-              <% users.forEach(user => { %> <% if (user.access == "Developer") {
+              <% users.forEach(user => { %> 
               %>
             </tr>
 
             <tr>
               <td><%= user.logon_id %></td>
               <td><%= user.displayName %></td>
+              <td><%= user.discordId %></td>
+              <td><%= user.googleId %></td>
+              <td><%= user.access %></td>
+              <td><%= user.phoneNumber %></td>
               <td>
                 <button
                   id="editUser"
@@ -68,7 +76,7 @@
                 </button>
               </td>
             </tr>
-            <% }}) %>
+            <% }) %>
           </table>
         </div>
         <div class="p-4"></div>
@@ -115,9 +123,10 @@
   th {
     border-bottom: 1px solid #ddd;
     border-top: 1px solid #ddd;
-    padding: 0 25px;
-    margin: 30px;
-    max-width: 30rem;
+    width: 100%;
+
+    padding: 0px 25px 0px 25px;
+    margin: 10px;
   }
   #editUser {
     border-bottom: 1px solid #ddd;

@@ -30,11 +30,20 @@
   <body>
     <div class="page"></div>
     <div class="topnav" id="myTopnav">
-      <a href="/home">Dashboard</a>
-      <a href="/manage-jobs">Manage Jobs</a>
-      <a href="/users">Manage Users</a>
-      <a href="/tyres">Tyres</a>
-      <a href="/settings" class="active">Settings</a>
+      <a href="/home" class="active">Home</a>
+      <a href="/scan-in">Scan In</a>
+      <a href="/scan-out">Scan Out</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/create-asset">Create Asset</a>
+      <a href="/update-asset">Update Asset</a>
+      <a href="/remove-asset">Remove Asset</a>
+      <% }%>
+      <a href="/asset-logs">Asset Logs</a>
+      <a href="/search">Search</a>
+      <a href="/settings">Settings</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/asset-viewer">Asset Viewer</a>
+      <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
       </a>
@@ -95,17 +104,18 @@
                                           >
                                             <input
                                               type="file"
+                                              disabled
                                               id="imageUpload"
                                               accept=".png, .jpg, .jpeg"
                                             />
-                                            <label for="imageUpload"></label>
+                                            <label for="imageUpload"><i class="fa-fas fa-arrow-up-from-bracket"></i></label>
                                           </form>
                                         </div>
                                         <div class="avatar-preview">
                                           <img
                                             class="profile-user-img img-responsive img-circle"
                                             id="imagePreview"
-                                            src="https://adminlte.io/themes/AdminLTE/dist/img/user3-128x128.jpg"
+                                            src="https://i.imgur.com/EGGwrYF.jpeg"
                                             alt="User profile picture"
                                           />
                                         </div>
@@ -136,7 +146,7 @@
                                   >
                                     Personal Information</a
                                   >
-                                  <a
+                                  <!-- <a
                                     class="nav-item nav-link nav-link-upper"
                                     id="scripts-tab"
                                     data-toggle="tab"
@@ -168,7 +178,7 @@
                                     aria-selected="false"
                                   >
                                     SMS Notifications</a
-                                  >
+                                  > -->
                                 </div>
                               </nav>
                             </div>
@@ -236,8 +246,7 @@
                                         </span>
 
                                         <small class="form-text text-muted"
-                                          >This is your Halfords logon_id
-                                          Number.</small
+                                          >This is your Username.</small
                                         >
                                       </div>
                                       <!-- Input Row End-->

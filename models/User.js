@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
     default: "not-set" + makeid(14),
   },
   salt: { type: Buffer, require: true },
-  access: { type: String, default: null },
+  access: { type: String, default: 'None' },
 });
 
 const User = mongoose.model("User", userSchema);

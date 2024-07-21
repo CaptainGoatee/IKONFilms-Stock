@@ -60,33 +60,43 @@
     <div class="flex">
       <main class="flex-1 p-4">
         <div id="pageTitleName" class="flex justify-center">
-          <h1 class="text-2xl font-bold mb-4">Assets</h1>
+          <h1 class="text-2xl font-bold mb-4">Asset Logs</h1>
         </div>
-        <div id="pageTitleDescription" class="flex justify-center">
-          <h2>These are the assets that are currently in your possesion.</h2>
-        </div>
+        <div id="pageTitleDescription" class="flex justify-center"></div>
         <div class="p-4"></div>
 
         <div class="bg-white shadow-md rounded-lg p-4">
           <table class="w-full">
             <thead>
               <tr>
-                <th class="text-left">#</th>
-                <th class="text-left">Type</th>
-                <th class="text-left">Job</th>
-                <th class="text-left">Time</th>
-                <th class="text-left">Actions</th>
+                <th class="text-left">Asset Name</th>
+                <th class="text-left">Description</th>
+                <th class="text-left">Action</th>
+                <th class="text-left">Reason</th>
+                <th class="text-left">Timestamp</th>
+                <th class="text-left">User</th>
               </tr>
             </thead>
             <tbody>
-              <% jobCards.forEach(job => { %>
-              <tr class="rowHover">
-                <td><%= job.vrm %></td>
-                <td><%= job.description %></td>
-                <td><%= job.status %></td>
-                <td><%= job.slotTime %></td>
+              <% assetLogs.forEach(log => { %> <%if (log.type == 'IN') { %>
+              <tr style="color: green" class="rowHover">
+                <td><%= log.name %></td>
+                <td><%= log.description %></td>
+                <td><%= log.action %></td>
+                <td><%= log.reason %></td>
+                <td><%= log.timestamp %></td>
+                <td><%= log.user %></td>
               </tr>
-              <% }) %>
+              <% } else { %>
+              <tr style="color: red" class="rowHover">
+                <td><%= log.name %></td>
+                <td><%= log.description %></td>
+                <td><%= log.action %></td>
+                <td><%= log.reason %></td>
+                <td><%= log.timestamp %></td>
+                <td><%= log.user %></td>
+              </tr>
+              <%}})%>
             </tbody>
           </table>
         </div>

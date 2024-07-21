@@ -72,6 +72,8 @@ app.get("/", (req, res) => {
 // const configSchema = require("./models/configSchema");
 const techModel = require("./models/techs");
 const assets = require("./models/assets");
+const assetsOut = require("./models/assets-out");
+const assetsLogs = require("./models/assets-logs");
 
 app.get("/login/google", passport.authenticate("google"));
 
@@ -131,6 +133,54 @@ app.post("/login/password", async function (req, res, next) {
     console.log(error);
   }
 });
+app.post("/signup", async function (req, res, next) {
+  const logon_id = await User.findOne({ logon_id: req.body.username });
+  const email = await User.findOne({ email: req.body.email });
+  console.log(logon_id);
+  console.log(email);
+  if (logon_id) {
+    // throw error
+    return res.render("signup", { error: "Error: logon_id already taken." });
+  }
+  if (email) {
+    // throw error
+    return res.render("signup", {
+      error: "Error: Email address already in use.",
+    });
+  }
+
+  try {
+    var salt = crypto.randomBytes(16);
+    crypto.pbkdf2(
+      req.body.password,
+      salt,
+      310000,
+      32,
+      "sha256",
+      async function (err, hashedPassword) {
+        if (err) {
+          console.log(err);
+        }
+        User.create({
+          logon_id: req.body.username,
+          email: req.body.email,
+          displayName: req.body.name,
+          salt: salt,
+          hashed_password: hashedPassword,
+        }).then(async (member, err) => {
+          if (err) {
+            console.log(err);
+          }
+          const users = await User.find();
+
+          res.redirect("/users");
+        });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+});
 app.get("/login", (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect("/home");
@@ -144,12 +194,22 @@ app.get("/scan-in", (req, res) => {
   }
   res.render("scan-in", { user: req.user });
 });
-app.get("/create_account", (req, res) => {
+app.get("/scan-out", (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/login");
   }
+  res.render("scan-out", { user: req.user });
+});
+app.get("/create_account", (req, res) => {
+  // if (!req.isAuthenticated()) {
+  //   return res.redirect("/login");
+  // }
+  const user = {
+    id: "req.user.id",
+    access: "Developer",
+  };
   res.render("signup", {
-    user: req.user,
+    user: user,
     error: "System: Please create an account.",
   });
 });
@@ -210,7 +270,7 @@ app.get("/home", async (req, res) => {
 // ----------------------------------------------
 // BACKGROUND PROCESSES - MISC
 // ----------------------------------------------
-app.post("/api/scan", async (req, res) => {
+app.post("/api/scan-in", async (req, res) => {
   // get barcodeID
 
   const barcodeID = req.body.scan;
@@ -218,7 +278,62 @@ app.post("/api/scan", async (req, res) => {
     barcodeId: barcodeID,
   });
   if (asset) {
-    return res.send(`${asset.name}`);
+    res.send(`${asset.name}`);
+    await assets.findOneAndUpdate(
+      { barcodeId: req.body.scan },
+      { $set: { status: "Available", lastUsed: Date.now() } }
+    );
+    const assetOutExist = await assetsOut.findOne({ barcodeId: req.body.scan });
+    if (assetOutExist) {
+      await assetsOut.findOneAndDelete({
+        barcodeId: barcodeID,
+      });
+      await assetsLogs.create({
+        name: asset.name,
+        barcodeId: asset.barcodeId,
+        category: asset.category,
+        type: 'IN',
+        description: asset.description,
+        user: req.user.displayName,
+        action: "Marked Back In to Kit Room",
+        reason: "Scanned In",
+      });
+    }
+  }
+});
+app.post("/api/scan-out", async (req, res) => {
+  // get barcodeID
+
+  const barcodeID = req.body.scan;
+  const asset = await assets.findOne({
+    barcodeId: barcodeID,
+  });
+  if (asset) {
+    res.send(`${asset.name}`);
+    await assets.findOneAndUpdate(
+      { barcodeId: req.body.scan },
+      { $set: { status: "Marked Out", lastUsed: Date.now() } }
+    );
+    const assetOutExist = await assetsOut.findOne({ barcodeId: req.body.scan });
+    if (!assetOutExist) {
+      await assetsOut.create({
+        name: asset.name,
+        barcodeId: asset.barcodeId,
+        description: asset.description,
+        takenBy: req.user.displayName,
+        category: asset.category,
+      });
+      await assetsLogs.create({
+        name: asset.name,
+        category: asset.category,
+        barcodeId: asset.barcodeId,
+        type: 'OUT',
+        description: asset.description,
+        user: req.user.displayName,
+        action: "Taken out of Stock",
+        reason: "Scanned Out",
+      });
+    }
   }
 });
 
@@ -333,6 +448,13 @@ app.get("/create-asset", async (req, res) => {
 
   res.render("new-asset", { user: req.user, error });
 });
+app.get("/asset-logs", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  const logs = await assetsLogs.find()
+  res.render("assetLogs", { user: req.user, assetLogs: logs });
+});
 
 // -- /tyres
 app.get("/tyres", async (req, res) => {
@@ -372,6 +494,7 @@ app.get("/users", async (req, res) => {
     return res.redirect("/");
   }
   const users = await User.find();
+  console.log(users);
   res.render("users", { users });
 });
 
@@ -385,7 +508,7 @@ app.get("/settings", async (req, res) => {
 });
 
 // -- Progress Board
-app.get("/progress-board", async (req, res) => {
+app.get("/asset-viewer", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
@@ -403,43 +526,21 @@ app.get("/progress-board", async (req, res) => {
       error: "Account not verified by management.",
     });
   }
-  // const jobModel = mongoose.model(`${formattedDate}`, jobSchema);
-  // const jobData = await jobModel.find();
+  const assetData = await assets.find();
 
   // create new object
-  // let jobcards = [];
-  // let availabletechs = [];
+  let jobcards = [];
+  let availabletechs = [];
 
-  // const fetchedTechs = await techModel.find();
-  // fetchedTechs.forEach((tech) => {
-  //   availabletechs.push({ code: tech.code, name: tech.name });
-  // });
-
-  // jobData.forEach(async (job) => {
-  //   jobcards.push({
-  //     vrm: job.vrm,
-  //     description: job.description,
-  //     status: job.status.replace("_", " "),
-  //     technician: job.technician,
-  //     slotTime: job.slotTime,
-  //   });
-  // });
   setTimeout(async () => {
     try {
-      // const jobsSorted = await jobcards
-      //   .toSorted(({ slotTime: a }, { slotTime: b }) =>
-      //     a < b ? -1 : a > b ? 1 : 0
-      //   )
-      //   .filter((v, i, a) => a.findIndex((t) => t.vrm === v.vrm) === i);
-
       res.render("progressBoard", {
-        techs: availabletechs,
-        jobCards: "jobsSorted",
+        assets: assetData,
         user: req.user,
       });
-      // mongoose.connection.dropCollection("tempjobs");
     } catch (error) {
-      return console.log(error);
+      console.log(error);
+      return res.sendStatus(error);
     }
   }, 1000);
 });

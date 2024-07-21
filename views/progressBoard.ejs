@@ -51,27 +51,35 @@
         <div class="flex justify-center">
           <h1 class="text-2xl font-bold mb-4"></h1>
         </div>
-        <% techs.forEach(tech => { %>
         <div id="tables">
           <!-- TABLE START-->
           <div class="bg-white shadow-md rounded-lg p-4">
-            <h1 class="text-3xl"><%= tech.name%></h1>
+            <h1 class="text-3xl">Kit Room</h1>
             <div class="p-4"></div>
             <table class="tableSize">
               <thead>
                 <tr>
-                  <th class="">#</th>
+                  <th class="">Barcode</th>
+                  <th class="">Name</th>
+                  <th class="">Description</th>
+                  <th class="">Category</th>
+                  <th class="">Location</th>
                   <th class="">Status</th>
-                  <th class="">Time</th>
                 </tr>
               </thead>
               <tbody>
-                <% jobCards.forEach(job => { %> <% if (job.technician ==
-                tech.code) { %>
+                <% assets.forEach(a => { %><% if (a.status == 'Available') { %>
                 <tr class="rowHover">
-                  <td><%= job.vrm %></td>
-                  <td><%= job.status %></td>
-                  <td><%= job.slotTime %></td>
+                  <td><%= a.barcodeId %></td>
+                  <td><%= a.name %></td>
+                  <td><%= a.description %></td>
+                  <td><%= a.category %></td>
+                  <td><%= a.location %></td>
+                  <% if (a.status == 'Available') { %>
+                  <td style="color: green; font-weight: bolder;"><%= a.status %></td>
+                  <% } else if (a.status !== 'Available') { %>
+                  <td style="color: red; font-weight: bolder;"><%= a.status %></td>
+                  <% } %>
                 </tr>
                 <%}})%>
               </tbody>
@@ -79,7 +87,41 @@
           </div>
           <!-- TABLE END-->
           <div class="p-4"></div>
-          <%})%>
+          <!-- TABLE START-->
+          <div class="bg-white shadow-md rounded-lg p-4">
+            <h1 class="text-3xl">Kit Marked Out</h1>
+            <div class="p-4"></div>
+            <table class="tableSize">
+              <thead>
+                <tr>
+                  <th class="">Barcode</th>
+                  <th class="">Name</th>
+                  <th class="">Description</th>
+                  <th class="">Category</th>
+                  <th class="">Location</th>
+                  <th class="">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% assets.forEach(a => { %><% if (a.status !== 'Available') { %>
+                <tr class="rowHover">
+                  <td><%= a.barcodeId %></td>
+                  <td><%= a.name %></td>
+                  <td><%= a.description %></td>
+                  <td><%= a.category %></td>
+                  <td><%= a.location %></td>
+                  <% if (a.status == 'Available') { %>
+                  <td style="color: green; font-weight: bolder;"><%= a.status %></td>
+                  <% } else if (a.status !== 'Available') { %>
+                  <td style="color: red; font-weight: bolder;"><%= a.status %></td>
+                  <% } %>
+                </tr>
+                <%}})%>
+              </tbody>
+            </table>
+          </div>
+          <!-- TABLE END-->
+          <div class="p-4"></div>
         </div>
       </main>
     </div>
@@ -91,15 +133,18 @@
     text-align: center;
     width: 100%;
     font-size: 20px;
-    padding: 0 25px;
   }
   th {
     background-color: #909090;
-    font-size: 30px;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     width: 100%;
+    color: #f2f2f2;
   }
   td {
-    padding: 0 15px 5px;
+    padding: 0 15px 5px 15px;
+    margin: 5px;
     font-size: 20px;
   }
   tr:nth-child(even) {
