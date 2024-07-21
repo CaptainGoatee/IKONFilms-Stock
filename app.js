@@ -461,5 +461,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error", { user: discordUser });
 });
-const PORT = process.env.PORT || 3130;
+const PORT = process.env.PORT || 3140;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
