@@ -145,9 +145,6 @@ app.get("/scan-in", (req, res) => {
   res.render("scan-in", { user: req.user });
 });
 app.get("/create_account", (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect("/home");
-  }
   res.render("signup", {
     error:
       "System: Please create an account. Once you've created one, Please contact a System Administrator to finish setting your account up.",
