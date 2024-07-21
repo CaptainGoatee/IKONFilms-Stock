@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: { type: String, required: false, unique: false, default: ""},
   badge: { type: String, required: false, unique: false },
-  payroll: {
+  logon_id: {
     type: String,
     required: true,
     unique: true,

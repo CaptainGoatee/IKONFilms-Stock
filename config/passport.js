@@ -9,7 +9,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 module.exports = (passport) => {
   passport.use(
     new LocalStrategy(function verify(username, password, done) {
-      const userData = User.findOne({ payroll: username });
+      const userData = User.findOne({ logon_id: username });
       if (!userData) {
         done("Invalid username or password");
       }
@@ -25,7 +25,7 @@ module.exports = (passport) => {
             console.log(err);
           }
           User.findOne({
-            payroll: username,
+            logon_id: username,
             hashed_password: hashedPassword,
           }).then((member, err) => {
             if (err) {

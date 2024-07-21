@@ -85,7 +85,7 @@ app.get(
 
 app.post("/login/password", async function (req, res, next) {
   try {
-    const userData = await User.findOne({ payroll: req.body.username });
+    const userData = await User.findOne({ logon_id: req.body.username });
 
     if (!userData) {
       return res.render("login", { error: "Account not found." });
@@ -102,7 +102,7 @@ app.post("/login/password", async function (req, res, next) {
           console.log(err);
         }
         User.findOne({
-          payroll: req.body.username,
+          logon_id: req.body.username,
           hashed_password: hashedPassword,
         }).then((member) => {
           if (!member) {
@@ -185,7 +185,7 @@ app.get("/home", async (req, res) => {
     });
   }
   const assetModel = require('./models/assets')
-  // const jobCards = await jobModel.find({ technician: req.user.payroll });
+  // const jobCards = await jobModel.find({ technician: req.user.logon_id });
   // create new object
   // let jobcards = [];
   // await jobCards.forEach((job) =>
@@ -240,7 +240,7 @@ app.post("/update-personal", async (req, res) => {
   const userSaving = await User.findById(req.user._id);
 
   try {
-    console.log(req.user.payroll);
+    console.log(req.user.logon_id);
     const toUpdate = {
       displayName: `${req.body.nameForm}`,
       email: `${req.body.emailForm}`,
@@ -249,7 +249,7 @@ app.post("/update-personal", async (req, res) => {
     try {
       console.log(toUpdate);
       await User.findOneAndUpdate(
-        { payroll: req.user.payroll },
+        { logon_id: req.user.logon_id },
         {
           $set: {
             displayName: req.body.nameForm,
@@ -319,7 +319,7 @@ app.get("/settings", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
-  const user = await User.findOne({ payroll: req.user.payroll });
+  const user = await User.findOne({ logon_id: req.user.logon_id });
   res.render("settings", { user });
 });
 

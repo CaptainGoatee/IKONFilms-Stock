@@ -47,7 +47,7 @@
         <div class="table-responsive">
           <table id="myTable">
             <tr>
-              <th>Payroll</th>
+              <th>logon_id</th>
               <th>Name</th>
               <th></th>
               <% users.forEach(user => { %> <% if (user.access == "Developer") {
@@ -55,7 +55,7 @@
             </tr>
 
             <tr>
-              <td><%= user.payroll %></td>
+              <td><%= user.logon_id %></td>
               <td><%= user.displayName %></td>
               <td>
                 <button
