@@ -8,6 +8,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "express-validator": "^7.1.0",
+    "html5-qrcode": "^2.3.8",
     "http-errors": "^2.0.0",
     "install": "^0.13.0",
     "mongoose": "^8.4.0",

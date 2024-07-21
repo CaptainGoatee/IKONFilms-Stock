@@ -35,9 +35,9 @@ const app = express();
 mongoose.connect(process.env.MONGO_URI);
 
 const User = require("./models/User");
-const tempSchema = require("./models/tempModel");
+// const tempSchema = require("./models/tempModel");
 const stockTyres = require("./models/tyres");
-const jobSchema = require("./models/jobsheet");
+// const jobSchema = require("./models/jobsheet");
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
   res.render("login", { error: null });
 });
 
-const configSchema = require("./models/configSchema");
+// const configSchema = require("./models/configSchema");
 const techModel = require("./models/techs");
 
 app.get("/login/google", passport.authenticate("google"));
@@ -139,7 +139,7 @@ app.get("/scan-in", (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/login");
   }
-  res.render("scan-in", { error: null });
+  res.render("scan-in", { user: req.user });
 });
 app.get("/create_account", (req, res) => {
   if (req.isAuthenticated()) {
@@ -184,24 +184,24 @@ app.get("/home", async (req, res) => {
       error: "Account not verified by iKON Studios.",
     });
   }
-  const jobModel = await mongoose.model(`${formattedDate}`, jobSchema);
-  const jobCards = await jobModel.find({ technician: req.user.payroll });
+  const assetModel = require('./models/assets')
+  // const jobCards = await jobModel.find({ technician: req.user.payroll });
   // create new object
-  let jobcards = [];
-  await jobCards.forEach((job) =>
-    jobcards.push({
-      vrm: job.vrm,
-      description: job.description,
-      status: job.status,
-      slotTime: job.slotTime,
-    })
-  );
+  // let jobcards = [];
+  // await jobCards.forEach((job) =>
+  //   jobcards.push({
+  //     vrm: job.vrm,
+  //     description: job.description,
+  //     status: job.status,
+  //     slotTime: job.slotTime,
+  //   })
+  // );
 
-  const sorted = await jobcards.toSorted(({ slotTime: a }, { slotTime: b }) =>
-    a < b ? -1 : a > b ? 1 : 0
-  );
+  // const sorted = await jobcards.toSorted(({ slotTime: a }, { slotTime: b }) =>
+  //   a < b ? -1 : a > b ? 1 : 0
+  // );
 
-  res.render("dashboard", { jobCards: sorted, user: req.user });
+  res.render("dashboard", { jobCards: [], user: req.user });
 });
 
 // ----------------------------------------------
@@ -342,43 +342,41 @@ app.get("/progress-board", async (req, res) => {
       error: "Account not verified by management.",
     });
   }
-  const jobModel = mongoose.model(`${formattedDate}`, jobSchema);
-  const tempModel = mongoose.model("tempJobs", tempSchema);
-  const jobData = await jobModel.find();
+  // const jobModel = mongoose.model(`${formattedDate}`, jobSchema);
+  // const jobData = await jobModel.find();
 
   // create new object
-  let jobcards = [];
-  let availabletechs = [];
+  // let jobcards = [];
+  // let availabletechs = [];
 
-  const fetchedTechs = await techModel.find();
-  fetchedTechs.forEach((tech) => {
-    availabletechs.push({ code: tech.code, name: tech.name });
-  });
+  // const fetchedTechs = await techModel.find();
+  // fetchedTechs.forEach((tech) => {
+  //   availabletechs.push({ code: tech.code, name: tech.name });
+  // });
 
-  jobData.forEach(async (job) => {
-    jobcards.push({
-      vrm: job.vrm,
-      description: job.description,
-      status: job.status.replace("_", " "),
-      technician: job.technician,
-      slotTime: job.slotTime,
-    });
-    await tempModel.create({ vrm: `${job.vrm}` });
-  });
+  // jobData.forEach(async (job) => {
+  //   jobcards.push({
+  //     vrm: job.vrm,
+  //     description: job.description,
+  //     status: job.status.replace("_", " "),
+  //     technician: job.technician,
+  //     slotTime: job.slotTime,
+  //   });
+  // });
   setTimeout(async () => {
     try {
-      const jobsSorted = await jobcards
-        .toSorted(({ slotTime: a }, { slotTime: b }) =>
-          a < b ? -1 : a > b ? 1 : 0
-        )
-        .filter((v, i, a) => a.findIndex((t) => t.vrm === v.vrm) === i);
+      // const jobsSorted = await jobcards
+      //   .toSorted(({ slotTime: a }, { slotTime: b }) =>
+      //     a < b ? -1 : a > b ? 1 : 0
+      //   )
+      //   .filter((v, i, a) => a.findIndex((t) => t.vrm === v.vrm) === i);
 
       res.render("progressBoard", {
         techs: availabletechs,
-        jobCards: jobsSorted,
+        jobCards: 'jobsSorted',
         user: req.user,
       });
-      mongoose.connection.dropCollection("tempjobs");
+      // mongoose.connection.dropCollection("tempjobs");
     } catch (error) {
       return console.log(error);
     }
