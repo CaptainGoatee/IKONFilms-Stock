@@ -22,51 +22,48 @@
     />
   </head>
   <script>
-      function myFunction() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-          x.className += " responsive";
-        } else {
-          x.className = "topnav";
-        }
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
       }
-    </script>
+    }
+  </script>
 
   <body class="page">
     <div class="topnav" id="myTopnav">
-        <a href="/home">Home</a>
-        <a href="/scan-in" class="active">Scan In</a>
-        <a href="/scan-out">Scan Out</a>
-        <% if (user.access == "Developer" ) {%>
-        <a href="/create-asset">Create Asset</a>
-        <a href="/create-asset">Update Asset</a>
-        <a href="/create-asset">Remove Asset</a>
-        <% }%>
-        <a href="/tyres">Asset Logs</a>
-        <a href="/settings">Search</a>
-        <% if (user.access == "Developer" ) {%>
-        <a href="/asset-viewer">Asset Viewer</a>
-        <% }%>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <i class="fa fa-bars"></i>
-        </a>
-      </div>
-      <div id="pageTitleName" class="flex justify-center">
-        <h1 class="text-2xl font-bold mb-4">Scan In</h1>
-      </div>
+      <a href="/home">Home</a>
+      <a href="/scan-in" class="active">Scan In</a>
+      <a href="/scan-out">Scan Out</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/create-asset">Create Asset</a>
+      <a href="/create-asset">Update Asset</a>
+      <a href="/create-asset">Remove Asset</a>
+      <% }%>
+      <a href="/tyres">Asset Logs</a>
+      <a href="/settings">Search</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/asset-viewer">Asset Viewer</a>
+      <% }%>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    <div id="pageTitleName" class="flex justify-center">
+      <h1 class="text-2xl font-bold mb-4">Scan In</h1>
+    </div>
     <div class="p-4"></div>
-      <div class="flex items-center justify-center mt-1">
-        <div
-          id="container"
-          class="bg-white p-8 rounded-lg shadow-md w-32 pt-40"
-        >
-          <div id="" class="flex justify-center">
-            <div id="container">
-              <div style="width: 500px" id="reader"></div>
-              <div style="width: 500px" id="result"></div>
-            </div>
+    <div class="flex items-center justify-center mt-1">
+      <div id="container" class="bg-white p-8 rounded-lg shadow-md w-32 pt-40">
+        <div id="" class="flex justify-center">
+          <div id="container">
+            <div style="width: 500px" id="reader"></div>
+            <div style="width: 500px" id="result"></div>
           </div>
         </div>
+      </div>
     </div>
   </body>
 </html>
@@ -77,189 +74,52 @@
     qrbox: 250,
   });
 
-  function onScanSuccess(decodedText, decodedResult) {
+  async function onScanSuccess(decodedText, decodedResult) {
     // Handle on success condition with the decoded text or result.
     console.log(`Scan result: ${decodedText}`, decodedResult);
-    document.getElementById(
-      "result"
-    ).innerHTML = `<div class="flex items-center justify-center mt-1">
+
+    // ...
+    //html5QrcodeScanner.clear();
+    // ^ this will stop the scanner (video feed) and clear the scan area.
+    // post decoded text
+
+    var url = `http://localhost:3130/api/scan`;
+    var data = {
+      scan: decodedText,
+    };
+    let itemName;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = async function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+        document.getElementById(
+          "result"
+        ).innerHTML = `<div class="flex items-center justify-center mt-1">
         <div
         id="container"
         class="bg-white p-8 rounded-lg shadow-md w-32 pt-40"
         >
-        <h1> Scanned: ${decodedText}
+        <h1> Scanned In: ${decodedText} - ${xhr.responseText}
             </h1>
         <div id="" class="flex justify-center">
-            <div id="container">
+            <div id="resulttext">
                 <div style="width: 500px" id="reader"></div>
                 </div>
                 </div>
                 </div>
                 </div>`;
-    // ...
-    //html5QrcodeScanner.clear();
-    // ^ this will stop the scanner (video feed) and clear the scan area.
+      }
+    };
+    await xhr.send(JSON.stringify(data));
+    // get response
   }
 
   html5QrcodeScanner.render(onScanSuccess);
 </script>
-<!-- <script>
-  function askPermission() {
-    //add constraints object
-    var constraints = {
-      audio: true,
-      video: true,
-    };
-
-    //call getUserMedia
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(function (mediaStream) {
-        var video = document.querySelector("video");
-        video.srcObject = mediaStream;
-        video.play();
-      })
-      .catch(function (err) {
-        console.log("There's an error!" + err.message);
-      });
-  }
-
-  askPermission();
-</script>
-<script type="module" src="">
-  import * as SDCCore from "scandit-web-datacapture-core";
-  import { barcodeCaptureLoader } from "scandit-web-datacapture-barcode";
-
-  const view = new SDCCore.DataCaptureView();
-
-  view.connectToElement(document.getElementById("data-capture-view"));
-  view.showProgressBar();
-  view.setProgressBarMessage("Loading ...");
-
-  await SDCCore.configure({
-    licenseKey: process.env.SCANDIT_LICENSE_KEY,
-    libraryLocation: new URL("library/engine/", document.baseURI).toString(),
-    moduleLoaders: [barcodeCaptureLoader()],
-  });
-
-  view.hideProgressBar();
-
-  const context = await SDCCore.DataCaptureContext.create();
-  await view.setContext(context);
-
-  const settings = new SDCBarcode.BarcodeCaptureSettings();
-  settings.enableSymbologies([
-    SDCBarcode.Symbology.Code128,
-    SDCBarcode.Symbology.Code39,
-    SDCBarcode.Symbology.QR,
-    SDCBarcode.Symbology.EAN8,
-    SDCBarcode.Symbology.UPCE,
-    SDCBarcode.Symbology.EAN13UPCA,
-  ]);
-  const listener = {
-    didScan: (barcodeCapture, session) => {
-      const recognizedBarcodes = session.newlyRecognizedBarcodes;
-      // Do something with the barcodes
-    },
-  };
-  const cameraSettings = SDCBarcode.BarcodeCapture.recommendedCameraSettings;
-
-  // Depending on the use case further camera settings adjustments can be made here.
-
-  const camera = SDCCore.Camera.default;
-
-  if (camera) {
-    await camera.applySettings(cameraSettings);
-  }
-  await context.setFrameSource(camera);
-  await camera.switchToDesiredState(Scandit.FrameSourceState.On);
-  const view2 = await SDCCore.DataCaptureView.forContext(context);
-  view2.connectToElement("video");
-  const overlay =
-    await SDCBarcode.BarcodeCaptureOverlay.withBarcodeCaptureForView(
-      barcodeCapture,
-      view
-    );
-</script> -->
 <style>
   #disabled {
-    cursor: not-allowed;
-  }
-  .login-with-google-btn {
-    transition: background-color 0.3s, box-shadow 0.3s;
-
-    padding: 12px 16px 12px 42px;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
-    background-color: rgb(76, 76, 76);
-    background-repeat: no-repeat;
-    background-position: 12px 11px;
-  }
-  .login-with-google-btn:hover {
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  .login-with-google-btn:active {
-    background-color: #eeeeee;
-  }
-
-  .login-with-google-btn:focus {
-    outline: none;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
-      0 0 0 3px #c8dafc;
-  }
-
-  .login-with-google-btn:disabled {
-    filter: grayscale(100%);
-    background-color: #ebebeb;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-    cursor: not-allowed;
-  }
-  .login-with-discord-btn {
-    transition: background-color 0.3s, box-shadow 0.3s;
-
-    padding: 12px 16px 12px 16px;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-
-    background-color: rgb(76, 76, 76);
-    background-repeat: no-repeat;
-    background-position: 12px 11px;
-  }
-  .login-with-discord-btn:hover {
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  .login-with-discord-btn:active {
-    background-color: #eeeeee;
-  }
-
-  .login-with-discord-btn:focus {
-    outline: none;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
-      0 0 0 3px #c8dafc;
-  }
-
-  .login-with-discord-btn:disabled {
-    filter: grayscale(100%);
-    background-color: #ebebeb;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
     cursor: not-allowed;
   }
 </style>

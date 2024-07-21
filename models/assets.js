@@ -14,5 +14,6 @@ const assetSchema = new Schema({
   dateCreated: { type: Date, default: Date.now() },
   lastUsed: { type: Date },
   dateUpdated: { type: Date, default: Date.now() },
+  createdBy: { type: String, required: true },
 });
 module.exports = model("assets", assetSchema);

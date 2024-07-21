@@ -5,6 +5,7 @@
 // ----------------------------------------------
 
 var createError = require("http-errors");
+const bodyParser = require("body-parser");
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
@@ -29,6 +30,7 @@ let formattedDate = date.toISOString().split("T")[0];
 const authRoutes = require("./routes/auth");
 
 const app = express();
+app.use(bodyParser.json());
 
 // Mongoose Models ::
 
@@ -69,6 +71,7 @@ app.get("/", (req, res) => {
 
 // const configSchema = require("./models/configSchema");
 const techModel = require("./models/techs");
+const assets = require("./models/assets");
 
 app.get("/login/google", passport.authenticate("google"));
 
@@ -184,7 +187,7 @@ app.get("/home", async (req, res) => {
       error: "Account not verified by iKON Studios.",
     });
   }
-  const assetModel = require('./models/assets')
+  const assetModel = require("./models/assets");
   // const jobCards = await jobModel.find({ technician: req.user.logon_id });
   // create new object
   // let jobcards = [];
@@ -207,6 +210,17 @@ app.get("/home", async (req, res) => {
 // ----------------------------------------------
 // BACKGROUND PROCESSES - MISC
 // ----------------------------------------------
+app.post("/api/scan", async (req, res) => {
+  // get barcodeID
+
+  const barcodeID = req.body.scan;
+  const asset = await assets.findOne({
+    barcodeId: barcodeID,
+  });
+  if (asset) {
+    return res.send(`${asset.name}`);
+  }
+});
 
 app.post("/update-users", async (req, res) => {
   if (!req.isAuthenticated()) {
@@ -268,10 +282,57 @@ app.post("/update-personal", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+app.post("/input-asset", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  const { barcodeValue, name, description, category, location, section } =
+    req.body;
+  console.log(req.body);
+  const staff = req.user.logon_id;
+  // check if barcode already exists
+  const asset = await assets.findOne({ barcodeId: barcodeValue });
+  if (asset) {
+    res.render("new-asset", {
+      user: req.user,
+      error: `An asset is already using that barcode: ${asset.name}`,
+    });
+  }
+  // Validate form inputs
+  try {
+    // Create a new ticket
+    const newAsset = await assets.create({
+      name: name,
+      description: description,
+      category: category,
+      barcodeId: barcodeValue,
+      location: location,
+      section: section,
+      createdBy: staff,
+    });
+    console.log(newAsset);
+
+    res.render("new-asset", {
+      user: req.user,
+      error: `Created Asset: ${name} with Barcode: ${barcodeValue}`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 // ----------------------------------------------
 // OTHER PAGES
 // ----------------------------------------------
+app.get("/create-asset", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  let error;
+
+  res.render("new-asset", { user: req.user, error });
+});
 
 // -- /tyres
 app.get("/tyres", async (req, res) => {
@@ -373,7 +434,7 @@ app.get("/progress-board", async (req, res) => {
 
       res.render("progressBoard", {
         techs: availabletechs,
-        jobCards: 'jobsSorted',
+        jobCards: "jobsSorted",
         user: req.user,
       });
       // mongoose.connection.dropCollection("tempjobs");

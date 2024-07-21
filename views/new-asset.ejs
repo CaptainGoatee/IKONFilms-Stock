@@ -1,0 +1,220 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iKON Studios</title>
+    <link rel="icon" href="/images/favicon.webp" type="image/x-icon" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/e96370e984.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <script
+    src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+    defer
+  ></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "9aad3e00-b01f-4dce-a398-69a1b3bc0188",
+        safari_web_id:
+          "web.onesignal.auto.1ee85315-99d2-4859-abe2-d0d2d86b4cd7",
+        notifyButton: {
+          enable: true,
+        },
+      });
+    });
+  </script>
+  <body class="page">
+    <div class="topnav" id="myTopnav">
+      <a href="/home" >Home</a>
+      <a href="/scan-in">Scan In</a>
+      <a href="/scan-out">Scan Out</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/create-asset" class="active">Create Asset</a>
+      <a href="/update-asset">Update Asset</a>
+      <a href="/remove-asset">Remove Asset</a>
+      <% }%>
+      <a href="/asset-logs">Asset Logs</a>
+      <a href="/search">Search</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/asset-viewer">Asset Viewer</a>
+      <% }%>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    <div class="flex">
+      <main class="flex-1 p-4">
+        <div class="shadow-md rounded-lg p-4">
+          <div class="logForm">
+            <div class="container mx-auto p-6 rounded-lg text-white">
+              <h1 class="text-3xl font-semibold mb-4">Create an asset</h1>
+              <p class="mb-6">
+                Please complete the form below to create your asset.
+              </p>
+
+            <% if (!error) { %>
+              <h1 class="text-red loginErrorMessage">
+                System: Fields with * are required.
+              </h1>
+              <% } %> <% if (error) { %>
+              <h1 class="text-red loginErrorMessage">System: <%= error %></h1>
+              <% } %>
+
+              <form
+                action="/input-asset"
+                method="POST"
+                class="bg-gray p-6 rounded-lg shadow-md"
+              >
+                <div class="mb-4">
+                  <label
+                    for="barcodeValue"
+                    class="block text-sm font-medium text-gray-700"
+                    >Barcode Value <span class="text-red">*</span></label
+                  >
+                  <input
+                    type="text"
+                    required
+                    id="barcodeValue"
+                    name="barcodeValue"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="000001"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-700"
+                    >Name <span class="text-red">*</span></label
+                  >
+                  <input
+                    type="text"
+                    required
+                    id="name"
+                    name="name"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="Camera Bag"
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="memberAssisted"
+                    class="block text-sm font-medium text-gray-700"
+                    >Description <span class="text-red">*</span></label
+                  >
+                  <input
+                    type="text"
+                    required
+                    id="description"
+                    name="description"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="Small Black Camera Bag"
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="category"
+                    class="block text-sm font-medium text-gray-700"
+                    >Asset Category <span class="text-red">*</span></label
+                  >
+                  <select
+                    id="category"
+                    name="category"
+                    required
+                    style="background-color: inherit"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="cameras">Cameras</option>
+                    <option value="lighting">Lighting</option>
+                    <option value="cables">Cables</option>
+                    <option value="bags">Bags</option>
+                    <option value="cases">Cases</option>
+                    <option value="audio">Audio</option>
+                    <option value="visual">Visual</option>
+                    <option value="props">Props</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="location"
+                    class="block text-sm font-medium text-gray-700"
+                    >Location</label
+                  >
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="Kit Room"
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="section"
+                    class="block text-sm font-medium text-gray-700"
+                    >Section</label
+                  >
+                  <input
+                    type="text"
+                    id="section"
+                    name="section"
+                    class="mt-1 block w-full border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="Shelf 2"
+                  />
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Create Asset Entry
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  input {
+    color: white;
+    background-color: var(--background);
+    width: auto;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+</style>
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+</script>
