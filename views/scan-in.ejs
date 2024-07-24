@@ -39,12 +39,13 @@
       <a href="/scan-out">Scan Out</a>
       <% if (user.access == "Developer" ) {%>
       <a href="/create-asset">Create Asset</a>
-      <a href="/create-asset">Update Asset</a>
-      <a href="/create-asset">Remove Asset</a>
+      <a href="/remove-asset">Remove Asset</a>
       <% }%>
-      <a href="/tyres">Asset Logs</a>
-      <a href="/settings">Search</a>
+      <a href="/asset-logs">Asset Logs</a>
+      <a href="/search">Search</a>
+      <a href="/settings">Settings</a>
       <% if (user.access == "Developer" ) {%>
+      <a href="/users">Users</a>
       <a href="/asset-viewer">Asset Viewer</a>
       <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -56,12 +57,10 @@
     </div>
     <div class="p-4"></div>
     <div class="flex items-center justify-center mt-1">
-      <div id="container" class="bg-white p-8 rounded-lg shadow-md w-32 pt-40">
-        <div id="" class="flex justify-center">
-          <div id="container">
-            <div style="width: 500px" id="reader"></div>
-            <div style="width: 500px" id="result"></div>
-          </div>
+      <div id="" class="flex justify-center">
+        <div id="container">
+          <div style="max-width: 500px; width: 100vw" id="reader"></div>
+          <div style="max-width: 500px; width: 100vw" id="result"></div>
         </div>
       </div>
     </div>

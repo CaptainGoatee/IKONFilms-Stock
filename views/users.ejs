@@ -20,11 +20,20 @@
   </head>
   <body class="page">
     <div class="topnav" id="myTopnav">
-      <a href="/home">Dashboard</a>
-      <a href="/manage-jobs">Manage Jobs</a>
-      <a href="/users">Manage Users</a>
-      <a href="/tyres" class="active">Tyres</a>
+      <a href="/home" class="active">Home</a>
+      <a href="/scan-in">Scan In</a>
+      <a href="/scan-out">Scan Out</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/create-asset">Create Asset</a>
+      <a href="/remove-asset">Remove Asset</a>
+      <% }%>
+      <a href="/asset-logs">Asset Logs</a>
+      <a href="/search">Search</a>
       <a href="/settings">Settings</a>
+      <% if (user.access == "Developer" ) {%>
+      <a href="/users">Users</a>
+      <a href="/asset-viewer">Asset Viewer</a>
+      <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
       </a>
@@ -40,7 +49,7 @@
         type="text"
         id="searchInput"
         onkeyup="myFunction()"
-        placeholder="&#xf002 Search ID"
+        placeholder="Search ID"
       />
       <form id="userManageTable" action="/update-users" method="POST">
         <div class="mt-6 text-right right-2"></div>
@@ -54,8 +63,7 @@
               <th>Access Level</th>
               <th>Phone Number</th>
               <th></th>
-              <% users.forEach(user => { %> 
-              %>
+              <% usersData.forEach(user => { %> %>
             </tr>
 
             <tr>
@@ -190,8 +198,9 @@
   }
   function myFunction() {
     // Declare variables
+    console.log('Running Search')
     var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("seacrhInput");
+    input = document.getElementById("searchInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");

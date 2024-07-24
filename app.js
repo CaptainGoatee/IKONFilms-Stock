@@ -247,11 +247,10 @@ app.get("/home", async (req, res) => {
       error: "Account not verified by iKON Studios.",
     });
   }
-  const assetModel = require("./models/assets");
   // const jobCards = await jobModel.find({ technician: req.user.logon_id });
   // create new object
   // let jobcards = [];
-  // await jobCards.forEach((job) =>
+  // await jobCards.forEach((xjob) =>
   //   jobcards.push({
   //     vrm: job.vrm,
   //     description: job.description,
@@ -263,8 +262,9 @@ app.get("/home", async (req, res) => {
   // const sorted = await jobcards.toSorted(({ slotTime: a }, { slotTime: b }) =>
   //   a < b ? -1 : a > b ? 1 : 0
   // );
-
-  res.render("dashboard", { jobCards: [], user: req.user });
+  const myAssets = await assetsOut.find({ takenByUsername: req.user.logon_id });
+  console.log(req.user);
+  res.render("dashboard", { myAssets, user: req.user });
 });
 
 // ----------------------------------------------
@@ -292,7 +292,7 @@ app.post("/api/scan-in", async (req, res) => {
         name: asset.name,
         barcodeId: asset.barcodeId,
         category: asset.category,
-        type: 'IN',
+        type: "IN",
         description: asset.description,
         user: req.user.displayName,
         action: "Marked Back In to Kit Room",
@@ -321,13 +321,14 @@ app.post("/api/scan-out", async (req, res) => {
         barcodeId: asset.barcodeId,
         description: asset.description,
         takenBy: req.user.displayName,
+        takenByUsername: req.user.logon_id,
         category: asset.category,
       });
       await assetsLogs.create({
         name: asset.name,
         category: asset.category,
         barcodeId: asset.barcodeId,
-        type: 'OUT',
+        type: "OUT",
         description: asset.description,
         user: req.user.displayName,
         action: "Taken out of Stock",
@@ -408,7 +409,7 @@ app.post("/input-asset", async (req, res) => {
   // check if barcode already exists
   const asset = await assets.findOne({ barcodeId: barcodeValue });
   if (asset) {
-    res.render("new-asset", {
+    return res.render("new-asset", {
       user: req.user,
       error: `An asset is already using that barcode: ${asset.name}`,
     });
@@ -425,9 +426,19 @@ app.post("/input-asset", async (req, res) => {
       section: section,
       createdBy: staff,
     });
+    await assetsLogs.create({
+      name: name,
+      barcodeId: barcodeValue,
+      category: category,
+      type: "CREATE",
+      description: description,
+      user: req.user.displayName,
+      action: "Created an Asset",
+      reason: "Asset Create",
+    });
     console.log(newAsset);
 
-    res.render("new-asset", {
+    return res.render("new-asset", {
       user: req.user,
       error: `Created Asset: ${name} with Barcode: ${barcodeValue}`,
     });
@@ -452,7 +463,7 @@ app.get("/asset-logs", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
-  const logs = await assetsLogs.find()
+  const logs = await assetsLogs.find();
   res.render("assetLogs", { user: req.user, assetLogs: logs });
 });
 
@@ -493,9 +504,11 @@ app.get("/users", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
-  const users = await User.find();
-  console.log(users);
-  res.render("users", { users });
+  if (req.user.access !== 'Developer') {
+    return res.redirect("/home");
+  }
+  const usersData = await User.find();
+  res.render("users", { usersData, user: req.user});
 });
 
 // -- /settings

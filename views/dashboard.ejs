@@ -44,13 +44,13 @@
       <a href="/scan-out">Scan Out</a>
       <% if (user.access == "Developer" ) {%>
       <a href="/create-asset">Create Asset</a>
-      <a href="/update-asset">Update Asset</a>
       <a href="/remove-asset">Remove Asset</a>
       <% }%>
       <a href="/asset-logs">Asset Logs</a>
       <a href="/search">Search</a>
       <a href="/settings">Settings</a>
       <% if (user.access == "Developer" ) {%>
+      <a href="/users">Users</a>
       <a href="/asset-viewer">Asset Viewer</a>
       <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -72,19 +72,20 @@
             <thead>
               <tr>
                 <th class="text-left">#</th>
-                <th class="text-left">Type</th>
-                <th class="text-left">Job</th>
-                <th class="text-left">Time</th>
-                <th class="text-left">Actions</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Description</th>
+                <th class="text-left">Category</th>
+                <th class="text-left">Date</th>
               </tr>
             </thead>
             <tbody>
-              <% jobCards.forEach(job => { %>
+              <% myAssets.forEach(a => { %>
               <tr class="rowHover">
-                <td><%= job.vrm %></td>
-                <td><%= job.description %></td>
-                <td><%= job.status %></td>
-                <td><%= job.slotTime %></td>
+                <td><%= a.barcode%></td>
+                <td><%= a.name %></td>
+                <td><%= a.description %></td>
+                <td><%= a.category %></td>
+                <td><%= a.dateTakenOut %></td>
               </tr>
               <% }) %>
             </tbody>

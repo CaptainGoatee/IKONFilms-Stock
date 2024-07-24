@@ -10,5 +10,6 @@ const assetSchema = new Schema({
   dateTakenOut: { type: Date, default: Date.now() },
   dateScannedIn: { type: Date, default: null },
   takenBy: { type: String, required: true },
+  takenByUsername: { type: String, required: true },
 });
 module.exports = model("assets-out", assetSchema);

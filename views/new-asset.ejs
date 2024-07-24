@@ -37,17 +37,18 @@
   </script>
   <body class="page">
     <div class="topnav" id="myTopnav">
-      <a href="/home" >Home</a>
+      <a href="/home">Home</a>
       <a href="/scan-in">Scan In</a>
       <a href="/scan-out">Scan Out</a>
       <% if (user.access == "Developer" ) {%>
       <a href="/create-asset" class="active">Create Asset</a>
-      <a href="/update-asset">Update Asset</a>
       <a href="/remove-asset">Remove Asset</a>
       <% }%>
       <a href="/asset-logs">Asset Logs</a>
       <a href="/search">Search</a>
+      <a href="/settings">Settings</a>
       <% if (user.access == "Developer" ) {%>
+      <a href="/users">Users</a>
       <a href="/asset-viewer">Asset Viewer</a>
       <% }%>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -64,7 +65,7 @@
                 Please complete the form below to create your asset.
               </p>
 
-            <% if (!error) { %>
+              <% if (!error) { %>
               <h1 class="text-red loginErrorMessage">
                 System: Fields with * are required.
               </h1>
